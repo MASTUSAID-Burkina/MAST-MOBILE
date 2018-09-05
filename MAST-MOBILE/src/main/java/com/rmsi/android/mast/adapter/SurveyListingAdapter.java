@@ -70,18 +70,6 @@ import com.rmsi.android.mast.util.StringUtility;
             }
 
             Property property = DbController.getInstance(context).getProperty(feat.getId());
-    //        if(property.getFlag().equalsIgnoreCase("R")){
-    //            if (!StringUtility.isEmpty(feat.getPolygonNumber()))
-    //                viewHolder.textViewItem.setText("Resource "+" " + property.getiIndex());
-    //            else
-    //                viewHolder.textViewItem.setText("Resource "+" " + property.getiIndex());
-    //
-    //        }else if (property.getFlag().equalsIgnoreCase("P")) {
-    //            if (!StringUtility.isEmpty(feat.getPolygonNumber()))
-    //                viewHolder.textViewItem.setText(claimStr + " " +  property.getiIndex());
-    //            else
-    //                viewHolder.textViewItem.setText(claimStr + " " +  property.getiIndex());
-    //        }
 
             if(property.getFlag().equalsIgnoreCase("R")){
                 if (!StringUtility.isEmpty(feat.getPolygonNumber()))
@@ -90,12 +78,14 @@ import com.rmsi.android.mast.util.StringUtility;
                     viewHolder.textViewItem.setText("Resource "+" " +  property.getIpNumber());
 
             }else if (property.getFlag().equalsIgnoreCase("P")) {
-                if (!StringUtility.isEmpty(feat.getPolygonNumber()))
+                if(property.getRight() != null && property.getRight().getNaturalPersons() != null &&
+                        property.getRight().getNaturalPersons().size() > 0){
+                    viewHolder.textViewItem.setText(property.getIpNumber() + " "
+                            + property.getRight().getNaturalPersons().get(0).getFullName(context));
+                } else {
                     viewHolder.textViewItem.setText(claimStr + " " +  property.getIpNumber());
-                else
-                    viewHolder.textViewItem.setText(claimStr + " " +  property.getIpNumber());
+                }
             }
-
 
             viewHolder.options.setTag(position);
 

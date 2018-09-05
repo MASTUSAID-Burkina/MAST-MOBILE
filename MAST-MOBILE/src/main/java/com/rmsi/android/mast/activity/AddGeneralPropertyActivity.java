@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -39,11 +40,6 @@ public class AddGeneralPropertyActivity extends ActionBarActivity {
     private CommonFunctions cf = CommonFunctions.getInstance();
     private boolean readOnly = false;
 
-    private static boolean keyboardHidden = true;
-    private static int reduceHeight = 0;
-    private KeyboardUtil keyboardUtil;
-    private String personType=null;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,8 +57,6 @@ public class AddGeneralPropertyActivity extends ActionBarActivity {
         if (extras != null) {
             featureId = extras.getLong("featureid");
             isDispute = extras.getBoolean("isDispute");
-            personType=extras.getString("PERSONTYPE");
-
 
             attributes = db.getPropAttributesByType(featureId, Attribute.TYPE_GENERAL_PROPERTY);
             if (attributes.size() < 1) {
@@ -98,8 +92,6 @@ public class AddGeneralPropertyActivity extends ActionBarActivity {
         listView.addFooterView(footerView);
         listView.setAdapter(adapterList);
 
-        keyboardUtil=new KeyboardUtil(AddGeneralPropertyActivity.this,footerView);
-
         if (readOnly) {
             btnSave.setVisibility(View.GONE);
         }
@@ -116,7 +108,6 @@ public class AddGeneralPropertyActivity extends ActionBarActivity {
                 finish();
             }
         });
-
     }
 
     public void saveData() {
@@ -127,25 +118,10 @@ public class AddGeneralPropertyActivity extends ActionBarActivity {
                 if (saveResult) {
                     cf.showToast(context, R.string.data_saved, Toast.LENGTH_SHORT);
 
-                    if (personType==null) {
-                        if (isDispute) {
-                            Intent myIntent = new Intent(context, AddDisputeActivity.class);
-                            myIntent.putExtra("featureid", featureId);
-                            finish();
-                            startActivity(myIntent);
-                        } else {
-                            Intent myIntent = new Intent(context, AddSocialTenureActivity.class);
-                            myIntent.putExtra("featureid", featureId);
-                            finish();
-
-                            startActivity(myIntent);
-                        }
-                    }else {
-                        Intent myIntent = new Intent(context, AddNonNaturalActivity.class);
-                        myIntent.putExtra("featureid", featureId);
-                        finish();
-                        startActivity(myIntent);
-                    }
+                    Intent myIntent = new Intent(context, AddSocialTenureActivity.class);
+                    myIntent.putExtra("featureid", featureId);
+                    finish();
+                    startActivity(myIntent);
                 } else {
                     cf.showToast(context, R.string.unable_to_save_data, Toast.LENGTH_SHORT);
                 }

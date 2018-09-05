@@ -82,7 +82,8 @@ public class CommonFunctions {
     private final String KEY_SNAP_TO_SEGMENT = "snap_to_segment";
     private final String KEY_SNAP_TOLERANCE = "snap_tolerance";
     private final String KEY_MAP_EXTENT = "map_extent";
-
+    private final String KEY_PROJECT_NAME = "project_name";
+    private final String KEY_COMMUNE_NAME = "commune_name";
     private static final int ESTIMATED_TOAST_HEIGHT_DIPS = 48;
 
     public static int MEDIA_SYNC_PENDING = 0;
@@ -439,6 +440,18 @@ public class CommonFunctions {
         editor.commit();
     }
 
+    public void saveProjectName(String name) {
+        SharedPreferences.Editor editor = getmMyPreferences().edit();
+        editor.putString(KEY_PROJECT_NAME, name);
+        editor.commit();
+    }
+
+    public void saveCommuneName(String name) {
+        SharedPreferences.Editor editor = getmMyPreferences().edit();
+        editor.putString(KEY_COMMUNE_NAME, name);
+        editor.commit();
+    }
+
     public void saveEnableVertexDrawing(boolean enable) {
         SharedPreferences.Editor editor = getmMyPreferences().edit();
         editor.putBoolean(KEY_ENABLE_VERTEX_DRAWING, enable);
@@ -461,6 +474,14 @@ public class CommonFunctions {
 
     public String getMapExtent() {
         return getmMyPreferences().getString(KEY_MAP_EXTENT, "");
+    }
+
+    public String getProjectName() {
+        return getmMyPreferences().getString(KEY_PROJECT_NAME, "");
+    }
+
+    public String getCommuneName() {
+        return getmMyPreferences().getString(KEY_COMMUNE_NAME, "");
     }
 
     public String getPolygonColor() {

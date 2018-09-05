@@ -38,7 +38,7 @@
     </string-array>
     <string-array name="Language_arrays">
         <item>English</item>
-        <item>Swahili</item>
+        <item>Français</item>
     </string-array>
     <string-array name="add_options_arrays">
         <item>Capture Polygon</item>
@@ -171,7 +171,6 @@
         <item>Draft</item>
         <item>Completed</item>
         <item>Synced</item>
-        <item>Rejected</item>
     </string-array>
 
     <string name="title_activity_capture_spatial_data">Capture Resource Data</string>
@@ -331,8 +330,8 @@
     <string name="data_summary_label1">Tenure Relation:</string>
     <string name="data_summary_label1_1">Tenure Type:</string>
     <string name="data_summary_label1_owner">Owner:</string>
-    <string name="data_summary_label2">Property:</string>
-    <string name="data_summary_label3">Natural person(s):</string>
+    <string name="data_summary_label2">Property Details:</string>
+    <string name="data_summary_label3">Person Details:</string>
     <string name="data_summary_label4">Non-Natural person:</string>
     <string name="data_summary_label4_admin">Administrator:</string>
     <string name="data_summary_label5">Social tenure:</string>
@@ -429,7 +428,7 @@
     <string name="edit">Edit</string>
     <string name="btn_proceed">Proceed</string>
     <string name="enter_details">Please enter Details</string>
-    <string name="tenureType">Tenure Type</string>
+    <string name="tenureType">Type of Tenure</string>
     <string name="selectAOI">Select Work Allocation Unit</string>
 
     <!-- added String on 03/Nov/15- -->
@@ -447,7 +446,7 @@
     <string name="warning_pleaseAddGuardianMinor">Please add Guardian for this Minor</string>
     <string name="warning_addPersonPhoto">Please add Person\'s Photo</string>
     <string name="can_not_add_poi">You can not add "\"Person of Interest\"" if Tenure type is "\"Guardian(Minor)\""</string>
-    <string name="add_owner_first">Please add Owner first</string>
+    <string name="add_owner_first">Please add representative first</string>
     <string name="can_not_add_adminGuardian_in_SingleOccuapncy">You can not add "\"Administrator\"" or "\"Guardian\"" in case of "\"Single Occupancy\""</string>
     <string name="can_not_add_more_than_one_owner_in_SingleOccuapncy">You can not add more than one Owner in case of "\"Single Tenancy\""</string>
     <string name="can_not_add_adminGuardian_in_multipleOccuapncy_joint">You can not add "Administrator" or "Guardian" in case of "Multiple Occupancy(Joint Tenancy)"</string>
@@ -496,14 +495,16 @@
     <string name="personType">Person type:</string>
     <string name="selectPersonType">Select person type</string>
     <string name="rightType">Type of Right</string>
-    <string name="shareType">Type of Tenancy</string>
-    <string name="certNumber">CCRO/Title number</string>
-    <string name="certDate">CCRO/Title date</string>
+    <string name="shareType">Type of Tenure</string>
+    <string name="certNumber">Title Number</string>
+    <string name="certDate">Date of Registration</string>
+    <string name="certType">Title type</string>
     <string name="juridicalArea">Juridical area (acres)</string>
     <string name="SelectRightType">Select tenancy type</string>
-    <string name="SelectShareType">Select occupancy type</string>
-    <string name="FillCertNumber">Fill in CCRO/Title number</string>
-    <string name="SelectCertDate">Select CCRO/Title date</string>
+    <string name="SelectShareType">Select tenure type</string>
+    <string name="FillCertNumber">Fill in tittle number</string>
+    <string name="SelectCertDate">Select title date</string>
+    <string name="SelectCertType">Select title type</string>
     <string name="FillJuridicalArea">Fill in juridical area</string>
     <string name="SelectResidency">Select residency</string>
     <string name="administrator">Administrator</string>
@@ -520,7 +521,7 @@
     <string name="SelectRelationshipType">Select relationship type</string>
     <string name="AddNonNaturalPerson">Add Non-Natural person</string>
     <string name="RepresentativePerson">Representative Person</string>
-    <string name="Claim">Transaction Number</string>
+    <string name="Claim">Spatial Unit Id</string>
     <string name="ParcelClaim">Parcel</string>
     <string name="Dob">Date of birth</string>
     <string name="FillGeneralProperties">Fill in general properties of the claim</string>
@@ -538,6 +539,7 @@
     <string name="MultiCommonShareError">Multiple occupancy in common must have at least 2 owners </string>
     <string name="GuardianShareError">Guardian occupancy must have one or more Minors and up to 2 Guardians</string>
     <string name="ProbateShareError">Tenancy in probate must have deceased person and up to 2 administrators. </string>
+    <string name="PrimaryOwner">Please Any one primary owner</string>
     <string name="FillShareSize">Fill in share size field</string>
     <string name="ShareSize">Share size</string>
     <string name="Next">Next</string>
@@ -583,6 +585,14 @@
     <string name="SelectRegion">Enter Region </string>
     <string name="SelectCountry">Enter Country </string>
     <string name="SelectMobileNumber">Enter Mobile Number </string>
+    <string name="commune_name">Commune</string>
+    <string name="SelectVillage">Select Village</string>
+    <string name="enter_otherExistingUse">Enter Other Existing Use</string>
+    <string name="submit_answer">Submit Answer</string>
+    <string name="AddRepresentative">Add Representative</string>
+    <string name="add_social_tenure">Add Social Tenure</string>
+    <string name="add_poi">Add at least 1 person of interest</string>
+    <string name="enter_poi_details">Enter first name, last name and select gender</string>
 
 
 </resources>

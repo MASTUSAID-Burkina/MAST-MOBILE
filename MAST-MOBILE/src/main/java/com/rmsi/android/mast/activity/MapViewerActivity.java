@@ -162,12 +162,13 @@ public class MapViewerActivity extends ActionBarActivity implements OnMapReadyCa
             role = extra.getInt("role");
         }
 
+        findViewById(R.id.btn_verify_data).setVisibility(View.GONE);
+
         if (role == 1)  // Hardcoded Id for Role (1=Trusted Intermediary, 2=Adjudicator)
         {
-            findViewById(R.id.btn_verify_data).setVisibility(View.GONE);
             findViewById(R.id.btn_review_data).setVisibility(View.VISIBLE);
         } else if (role == 2) {
-            findViewById(R.id.btn_verify_data).setVisibility(View.VISIBLE);
+            //findViewById(R.id.btn_verify_data).setVisibility(View.VISIBLE);
             findViewById(R.id.btn_review_data).setVisibility(View.GONE);
         }
 
@@ -205,16 +206,13 @@ public class MapViewerActivity extends ActionBarActivity implements OnMapReadyCa
         offlineSpatialData = DbController.getInstance(context).getProjectSpatialData();
 
         mLayerTitles.add("Satellite Map");
-        // mLayerTitles.add("Captured features");
         mLayerTitles.add("Parcel");
         mLayerTitles.add("Resource");
         mLayerTitles.add("AOI");
-        //mLayerTitles.add("Offline data");
 
         // This is commented to stop Tanzania MB tiles data as per Jeff comment on 29 Jan 18
         for (int i = 0; i < offlineSpatialData.size(); i++) {
-            mLayerTitles.add(offlineSpatialData.get(i).getFile_Name());
-            // mLayerTitles.add("Liberia Mbtiles");
+            mLayerTitles.add(offlineSpatialData.get(i).getAlias());
         }
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_layer_manager);

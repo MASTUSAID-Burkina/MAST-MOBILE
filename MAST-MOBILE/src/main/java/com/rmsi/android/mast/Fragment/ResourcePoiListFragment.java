@@ -133,10 +133,8 @@ public class ResourcePoiListFragment extends ListFragment implements ListActivit
 
         Button save = (Button) dialog.findViewById(R.id.btn_ok);
         final EditText firstName = (EditText) dialog.findViewById(R.id.editTextFirstName);
-        final EditText middleName = (EditText) dialog.findViewById(R.id.editTextMiddleName);
         final EditText lastName = (EditText) dialog.findViewById(R.id.editTextLastName);
         final Spinner genderSpinner = (Spinner) dialog.findViewById(R.id.spinnerGender);
-        final Spinner relSpinner = (Spinner) dialog.findViewById(R.id.spinnerRelationshipType);
         final TextView txtDob = (TextView) dialog.findViewById(R.id.txtDob);
         LinearLayout extraFields = (LinearLayout) dialog.findViewById(R.id.extraLayout);
         extraFields.setVisibility(View.VISIBLE);
@@ -149,9 +147,7 @@ public class ResourcePoiListFragment extends ListFragment implements ListActivit
         List<Gender> genders = db.getGenders(true);
 
         genderSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, genders));
-        relSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, relTypes));
         ((ArrayAdapter) genderSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        ((ArrayAdapter) relSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         txtDob.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -165,7 +161,6 @@ public class ResourcePoiListFragment extends ListFragment implements ListActivit
 
         for (int i = 0; i < relTypes.size(); i++) {
             if (relTypes.get(i).getCode() > 0 && relTypes.get(i).getCode() == person.getRelationshipId()) {
-                relSpinner.setSelection(i);
                 break;
             }
         }
@@ -182,37 +177,31 @@ public class ResourcePoiListFragment extends ListFragment implements ListActivit
         if (separated.length == 1) {
             String fName = separated[0];
             firstName.setText(fName);
-            middleName.setText("");
             lastName.setText("");
         } else if (separated.length == 2) {
             String fName = separated[0];
             String mName = separated[1];
             firstName.setText(fName);
-            middleName.setText(mName);
             lastName.setText("");
         } else if (separated.length == 3) {
             String fName = separated[0];
             String mName = separated[1];
             String lName = separated[2];
             firstName.setText(fName);
-            middleName.setText(mName);
             lastName.setText(lName);
         }
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String name = firstName.getText().toString() + " " + middleName.getText().toString() + " " + lastName.getText().toString();
+                String name = firstName.getText().toString() + " " + lastName.getText().toString();
                 if (!TextUtils.isEmpty(name)) {
                     person.setName(name);
                     if(genderSpinner.getSelectedItem() != null)
                         person.setGenderId(((Gender)genderSpinner.getSelectedItem()).getCode());
                     else
                         person.setGenderId(0);
-                    if(relSpinner.getSelectedItem() != null)
-                        person.setRelationshipId(((RelationshipType)relSpinner.getSelectedItem()).getCode());
-                    else
-                        person.setRelationshipId(0);
+
                     person.setDob(txtDob.getText().toString());
 
                     if (DbController.getInstance(context).saveResPersonOfInterest(person)) {

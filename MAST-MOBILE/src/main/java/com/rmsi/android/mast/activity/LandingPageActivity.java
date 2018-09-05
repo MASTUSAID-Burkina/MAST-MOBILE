@@ -75,25 +75,16 @@ public class LandingPageActivity extends ActionBarActivity implements Receiver {
         if (toolbar != null)
             setSupportActionBar(toolbar);
 
-//
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
         roleId = CommonFunctions.getRoleID();
         mReceiver = new ServiceResultReceiver(new Handler());
         mReceiver.setReceiver(this);
 
+        findViewById(R.id.menuVerifyData).setVisibility(View.GONE);
+
 //        if (roleId == User.ROLE_TRUSTED_INTERMEDIARY) {
 //            findViewById(R.id.ad_menu1).setVisibility(View.GONE);
 ////            findViewById(R.id.ad_view1).setVisibility(View.GONE);
-//        } else if (roleId == User.ROLE_ADJUDICATOR) {
-//            findViewById(R.id.ti_menu1).setVisibility(View.GONE);
-//            findViewById(R.id.ti_menu2).setVisibility(View.GONE);
-////            findViewById(R.id.ti_view1).setVisibility(View.GONE);
-////            findViewById(R.id.ti_view2).setVisibility(View.GONE);
-//        } else {
-//            findViewById(R.id.ad_menu1).setVisibility(View.GONE);
-////            findViewById(R.id.ad_view1).setVisibility(View.GONE);
-//        }
+
 
         Button btn_mapviewer = (Button) findViewById(R.id.mapviewer);
         btn_mapviewer.setOnClickListener(new OnClickListener() {

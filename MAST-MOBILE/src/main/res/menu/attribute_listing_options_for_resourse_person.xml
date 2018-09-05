@@ -8,6 +8,19 @@
         android:orderInCategory="100"
         android:title="@string/edit_attributes"
         app:showAsAction="never"/>
+     
+      <item
+        android:id="@+id/add_image"
+        android:orderInCategory="100"
+        android:title="@string/add_photo"
+        app:showAsAction="never"/>
+
+        <item
+        android:id="@+id/delete_photo"
+        android:orderInCategory="100"
+        android:title="@string/delete_photo"
+        app:showAsAction="never"/>
+
 
       <item
         android:id="@+id/delete_entry"

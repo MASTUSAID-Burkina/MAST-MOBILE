@@ -10,17 +10,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.rmsi.android.mast.activity.R;
+import com.rmsi.android.mast.adapter.CheckBoxAdapter;
 import com.rmsi.android.mast.adapter.SpinnerAdapter;
+import com.rmsi.android.mast.db.DbController;
 import com.rmsi.android.mast.domain.Attribute;
 import com.rmsi.android.mast.domain.Option;
 
+import org.w3c.dom.Attr;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,8 +36,8 @@ import java.util.List;
  */
 public class GuiUtility {
 
-    private static boolean isMandatorty=true;
-    private static int isDipute=0;
+    private static boolean isMandatorty = true;
+    private static int isDipute = 0;
 
     /**
      * Appends LinearLayout with provided attributes
@@ -39,7 +46,7 @@ public class GuiUtility {
      * @param attributes List of attributes
      */
     public static void appendLayoutWithAttributes(LinearLayout layout, List<Attribute> attributes, boolean readOnly) {
-        isDipute=0;//for natural
+        isDipute = 0;//for natural
         if (attributes != null && attributes.size() > 0) {
             LayoutInflater inflater = (LayoutInflater) layout.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             for (Attribute attr : attributes) {
@@ -49,7 +56,7 @@ public class GuiUtility {
     }
 
     public static void appendLayoutWithAttributesByDisputed(LinearLayout layout, List<Attribute> attributes, boolean readOnly) {
-        isDipute=1;//for Disputed claim person
+        isDipute = 1;//for Disputed claim person
         if (attributes != null && attributes.size() > 0) {
             LayoutInflater inflater = (LayoutInflater) layout.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             for (Attribute attr : attributes) {
@@ -57,7 +64,6 @@ public class GuiUtility {
             }
         }
     }
-
 
 
     /**
@@ -81,15 +87,13 @@ public class GuiUtility {
         } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_NUMBER) {
             container = inflater.inflate(R.layout.item_edittext_numeric, null, false);
             attribute.setView(createInputRow(container, attribute, readOnly));
-        }else if (attribute.getControlType() == Attribute.CONTROL_TYPE_SPINNER) {
+        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_SPINNER) {
             container = inflater.inflate(R.layout.item_spinner, null, false);
             attribute.setView(createSpinnerViewFromArray(container, attribute, readOnly));
+        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_MULTISELECT) {
+            container = inflater.inflate(R.layout.item_button, null, false);
+            attribute.setView(createMultiselect(container, attribute, readOnly));
         }
-
-//        else if (attribute.getControlType() == Attribute.CONTROL_TYPE_SPINNER) {
-//            container = inflater.inflate(R.layout.item_spinner, null, false);
-//            attribute.setView(createSpinnerViewFromArray(container, attribute, readOnly));
-//        }
 
         if (container != null && !addSeparator) {
             View separator = (View) container.findViewById(R.id.separator);
@@ -278,64 +282,136 @@ public class GuiUtility {
         });
     }
 
-//    private static Spinner createSpinnerViewFromArray(View container, final Attribute attribute, boolean readOnly) {
-//        TextView fieldAlias = (TextView) container.findViewById(R.id.field);
-//        final Spinner spinner = (Spinner) container.findViewById(R.id.spinner1);
-//
-//            if (attribute.getName().equalsIgnoreCase("Disputed PersonType")) {
-//                container.setVisibility(View.GONE);
-//
-//            }else {
-//
-//                fieldAlias.setText(attribute.getName());
-//                spinner.setPrompt(attribute.getName());
-//                spinner.setTag(attribute.getId());
-//
-//                SpinnerAdapter spinnerAdapter = new SpinnerAdapter(
-//                        container.getContext(),
-//                        android.R.layout.simple_spinner_item,
-//                        attribute.getOptionsList());
-//                spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//                spinner.setAdapter(spinnerAdapter);
-//
-//                if (readOnly) {
-//                    spinner.setEnabled(false);
-//                }
-//
-//                String fieldValue = attribute.getValue();
-//
-//                if (!StringUtility.isEmpty(fieldValue) && !fieldValue.equalsIgnoreCase("Select an option")) {
-//                    int currentValue = Integer.parseInt(fieldValue);
-//                    spinner.setSelection(spinnerAdapter.getPosition(currentValue));
-//                }
-//
-//                bindActionOnSpinnerChange(spinner, new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        Option selecteditem = (Option) spinner.getSelectedItem();
-//                        attribute.setValue(selecteditem.getId().toString());
-////                attribute.setValue(selecteditem.getId().toString());
-//                    }
-//                });
-//
-//            }
-//
-////
-//
-//        return spinner;
-//    }
+    private static TextView createMultiselect(final View container, final Attribute attribute, boolean readOnly) {
+        TextView attributeLable = (TextView) container.findViewById(R.id.field);
+        TextView selectedOptionsText = (TextView) container.findViewById(R.id.selectoptionsText);
+        final EditText otherExistingUSe = (EditText) container.findViewById(R.id.editTextOtherExistingUse);
 
+        selectedOptionsText.setEnabled(!readOnly);
+        otherExistingUSe.setEnabled(!readOnly);
 
+        attributeLable.setText(attribute.getLabelName());
+        List<String> optionTextList = new ArrayList<String>();
+        String fieldValue = attribute.getValue();
 
+        if (fieldValue != null && !fieldValue.equals("")) {
+            String optionIds[] = fieldValue.split(",");
+            for (int i = 0; i < optionIds.length; i++) {
+                String optionId = optionIds[i];
+                optionTextList.add(DbController.getInstance(CommonFunctions.getApplicationContext()).getOptionText(optionId));
+            }
+
+            selectedOptionsText.setText(optionTextList.toString());
+
+            if (fieldValue.contains(Option.ID_OTHER_USE)) {
+                otherExistingUSe.setVisibility(View.VISIBLE);
+                otherExistingUSe.setText(DbController.getInstance(CommonFunctions.getApplicationContext())
+                        .getPropOtherUse(attribute.getFeatureId()));
+            } else
+                otherExistingUSe.setVisibility(View.GONE);
+        }
+
+        bindActionOnFieldChange(otherExistingUSe, new Runnable() {
+            @Override
+            public void run() {
+                attribute.setValue2(otherExistingUSe.getText().toString());
+            }
+        });
+
+        bindActionOnMultiselect(attribute, selectedOptionsText, otherExistingUSe);
+        return selectedOptionsText;
+    }
+
+    private static void bindActionOnMultiselect(final Attribute attribute, final TextView selectedOption, final EditText otherExistingUSe) {
+        selectedOption.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                ArrayList<String> list = new ArrayList<String>();
+                final List<Option> optionsList = attribute.getOptionsList();
+
+                for (int i = 0; i < optionsList.size(); i++) {
+                    list.add(optionsList.get(i).toString());
+                }
+
+                final Dialog dialog = new Dialog(v.getContext(), R.style.DialogThemeLight);
+                dialog.setContentView(R.layout.item_multiselect);
+                dialog.getWindow().getAttributes().width = ViewGroup.LayoutParams.MATCH_PARENT;
+                dialog.setCanceledOnTouchOutside(false);
+                dialog.setTitle(attribute.getLabelName());
+
+                final ListView mutilist = (ListView) dialog.findViewById(R.id.listviewAnswer);
+                final CheckBoxAdapter multiadaptor = new CheckBoxAdapter(list, optionsList, StringUtility.empty(attribute.getValue()));
+
+                mutilist.setAdapter(multiadaptor);
+                Button button = (Button) dialog.findViewById(R.id.btn_SubmitAnswer);
+
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        ArrayList<String> selectedCheckboxText = new ArrayList<String>();
+                        String optionSelectedId = "";
+                        Boolean dialog_status = true;
+
+                        for (int i = 0; i < optionsList.size(); i++) {
+                            LinearLayout view = (LinearLayout) mutilist.getChildAt(i);
+                            if (dialog_status == false) {
+                                break;
+                            }
+                            if (view != null) {
+                                for (int j = 0; j < optionsList.size(); j++) {
+                                    try {
+                                        View child = view.getChildAt(j);
+
+                                        if (child instanceof CheckBox) {
+                                            CheckBox cb = (CheckBox) child;
+                                            if (cb.isChecked()) {
+                                                selectedCheckboxText.add(optionsList.get(i).toString());
+                                                if(optionSelectedId.equals("")){
+                                                    optionSelectedId += optionsList.get(i).getId();
+                                                } else {
+                                                    optionSelectedId += "," + optionsList.get(i).getId();
+                                                }
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        e.getStackTrace();
+                                    }
+                                }
+                            }
+                        }
+
+                        if (selectedCheckboxText.size() < 1) {
+                            selectedOption.setText("");
+                            otherExistingUSe.setText("");
+                            attribute.setValue2(null);
+                            attribute.setValue(null);
+                        } else {
+                            selectedOption.setText(selectedCheckboxText.toString());
+                            attribute.setValue(optionSelectedId);
+                        }
+
+                        if ((optionSelectedId).contains(Option.ID_OTHER_USE)) {
+                            otherExistingUSe.setVisibility(View.VISIBLE);
+                            otherExistingUSe.setText("");
+                            attribute.setValue2(null);
+                        }
+                        else
+                            otherExistingUSe.setVisibility(View.GONE);
+
+                        dialog.dismiss();
+                    }
+                });
+                dialog.show();
+            }
+        });
+    }
 
     private static Spinner createSpinnerViewFromArray(View container, final Attribute attribute, boolean readOnly) {
         TextView fieldAlias = (TextView) container.findViewById(R.id.field);
         final Spinner spinner = (Spinner) container.findViewById(R.id.spinner1);
-        if (isDipute==0) {
+        if (isDipute == 0) {
             if (attribute.getName().equalsIgnoreCase("Disputed PersonType")) {
                 container.setVisibility(View.GONE);
 
-            }else {
+            } else {
 
                 fieldAlias.setText(attribute.getName());
                 spinner.setPrompt(attribute.getName());
@@ -372,7 +448,7 @@ public class GuiUtility {
         }
 //        TextView fieldAlias = (TextView) container.findViewById(R.id.field);
 //        final Spinner spinner = (Spinner) container.findViewById(R.id.spinner1);
-        else if (isDipute==1) {
+        else if (isDipute == 1) {
 
 
             fieldAlias.setText(attribute.getName());
@@ -432,7 +508,7 @@ public class GuiUtility {
                 || !attribute.getValue().equalsIgnoreCase("Chagua chaguo"))) {
             if (attribute.getValue().equalsIgnoreCase("yes") || attribute.getValue().equalsIgnoreCase("Ndiyo"))
 
-            spinner.setSelection(spinnerPosition);
+                spinner.setSelection(spinnerPosition);
             if (attribute.getValue().equalsIgnoreCase("no") || attribute.getValue().equalsIgnoreCase("Hapana"))
                 spinner.setSelection(spinnerPosition);
         }
@@ -450,7 +526,7 @@ public class GuiUtility {
     /**
      * Validates provided list of attributes and highlights underlying control in case of missing values in the mandatory fields
      *
-     * @param attributeList Attribute to validateAttributes;
+     * @param attributeList   Attribute to validateAttributes;
      * @param highlightErrors Indicates whether to highlight fields with errors or not
      */
     public static boolean validateAttributes(List<Attribute> attributeList, boolean highlightErrors) {
@@ -485,7 +561,7 @@ public class GuiUtility {
     /**
      * Validates provided attribute and highlights underlying control in case of missing value in the mandatory field
      *
-     * @param attribute Attribute to validateAttributes;
+     * @param attribute       Attribute to validateAttributes;
      * @param highlightErrors Indicates whether to highlight fields with errors or not
      */
 
@@ -499,19 +575,14 @@ public class GuiUtility {
 
             if (attribute.getName().equalsIgnoreCase("Identification No"))//Identification No.
             {
-                if(isMandatorty==true){
+                if (isMandatorty == true) {
                     if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
                         isValid = false;
                     }
-                }else{
+                } else {
                     isValid = true;
-//                    if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                        isValid = false;
-//                    }
                 }
-            }
-
-            else{
+            } else {
                 if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
                     isValid = false;
                 }
@@ -521,8 +592,7 @@ public class GuiUtility {
             if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
                 isValid = false;
             }
-        }
-        else if (attribute.getControlType() == Attribute.CONTROL_TYPE_BOOLEAN) {
+        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_BOOLEAN) {
             if (hasValidation.equalsIgnoreCase("true") &&
                     !StringUtility.empty(value).equalsIgnoreCase("yes") &&
                     !StringUtility.empty(value).equalsIgnoreCase("Ndiyo") &&
@@ -531,50 +601,47 @@ public class GuiUtility {
                     ) {
                 isValid = false;
             }
-        }
-        else if (attribute.getControlType() == Attribute.CONTROL_TYPE_NUMBER) {
+        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_NUMBER) {
             if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
                 isValid = false;
             }
         } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_SPINNER) {
-
-            if (attribute.getName().equalsIgnoreCase("Identification Type")){
-                if (value.equalsIgnoreCase("1156")){
-                    isMandatorty=false;
-
-
-                }else if (value.equalsIgnoreCase("0")){
-                    isValid=false;
-                }
-
-                else{
+            if (attribute.getName().equalsIgnoreCase("Identification Type")) {
+                if (value.equalsIgnoreCase("1156")) {
+                    isMandatorty = false;
+                } else if (value.equalsIgnoreCase("0")) {
+                    isValid = false;
+                } else {
                     isMandatorty = true;
-
-//                        if (hasValidation.equalsIgnoreCase("true") && (StringUtility.isEmpty(value) || value.equals("0"))) {
-//                            isMandatorty = true;
-//                        }
                 }
-            }
-
-            else {
-
-                if (isDipute==0 ){
+            } else {
+                if (isDipute == 0) {
                     if (attribute.getName().equalsIgnoreCase("Disputed PersonType")) {
                         for (int i = 0; i < attribute.getOptionsList().size(); i++) {
                             if (attribute.getOptionsList().get(i).getId() == 1165 || attribute.getOptionsList().get(i).getId() == 1166) {
                                 isValid = true;
                             }
                         }
-                    }else {
+                    } else {
                         if (hasValidation.equalsIgnoreCase("true") && (StringUtility.isEmpty(value) || value.equals("0"))) {
                             isValid = false;
                         }
                     }
-                    }else {
+                } else {
                     if (hasValidation.equalsIgnoreCase("true") && (StringUtility.isEmpty(value) || value.equals("0"))) {
                         isValid = false;
                     }
                 }
+            }
+        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_MULTISELECT) {
+            if (attribute.getId().intValue() == Attribute.ATTR_EXISTING_USE && StringUtility.empty(value).equals(Option.ID_OTHER_USE)) {
+                // Other use
+                if (StringUtility.isEmpty(attribute.getValue2())) {
+                    isValid = false;
+                }
+            }
+            if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
+                isValid = false;
             }
         }
 
@@ -592,143 +659,4 @@ public class GuiUtility {
         }
         return isValid;
     }
-
-//    public static boolean validateAttribute(Attribute attribute, boolean highlightErrors) {
-//        boolean isValid = true;
-//        String value = attribute.getValue();
-//        String hasValidation = attribute.getValidate();
-//
-//
-//        if (attribute.getControlType() == Attribute.CONTROL_TYPE_STIRNG) {
-//
-//            if (attribute.getName().equalsIgnoreCase("IdentityNo"))
-//            {
-//                if(isMandatorty==true){
-//                    if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                        isValid = false;
-//                    }
-//                }else{
-//                    isValid = true;
-////                    if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-////                        isValid = false;
-////                    }
-//                }
-//            }
-//
-//            else{
-//                if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                    isValid = false;
-//                }
-//            }
-//
-//        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_DATE) {
-//            if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                isValid = false;
-//            }
-//        }
-//        else if (attribute.getControlType() == Attribute.CONTROL_TYPE_BOOLEAN) {
-//            if (hasValidation.equalsIgnoreCase("true") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("yes") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("Ndiyo") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("no") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("Hapana")
-//                    ) {
-//                isValid = false;
-//            }
-//        }
-//        else if (attribute.getControlType() == Attribute.CONTROL_TYPE_NUMBER) {
-//            if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                isValid = false;
-//            }
-//        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_SPINNER) {
-//
-//                if (attribute.getName().equalsIgnoreCase("IdentityType")){
-//                    if (value.equalsIgnoreCase("1156")){
-//                        isMandatorty=false;
-//
-//                    }else{
-//                        isMandatorty = true;
-////                        if (hasValidation.equalsIgnoreCase("true") && (StringUtility.isEmpty(value) || value.equals("0"))) {
-////                            isMandatorty = true;
-////                        }
-//                    }
-//                }
-//                else {
-//                    if (hasValidation.equalsIgnoreCase("true") && (StringUtility.isEmpty(value) || value.equals("0"))) {
-//                        isValid = false;
-//                    }
-//                }
-//        }
-//
-//        if (highlightErrors && attribute.getView() != null) {
-//            if (!isValid) {
-//                attribute.getView().setBackgroundColor(attribute.getView().getContext().getResources().getColor(R.color.lightred));
-//            } else {
-//                if (attribute.getInitialBackground() != null) {
-//                    attribute.getView().setBackground(attribute.getInitialBackground());
-//                } else {
-//                    attribute.getView().setBackgroundColor(attribute.getView().getContext().getResources().getColor(R.color.white));
-//                }
-//            }
-//        }
-//        return isValid;
-//    }
-
-
-//    public static boolean validateAttributebyPerson(Attribute attribute, boolean highlightErrors,int isDiputeValues) {
-//        boolean isValid = true;
-//        String value = attribute.getValue();
-//        String hasValidation = attribute.getValidate();
-//
-//        if (attribute.getControlType() == Attribute.CONTROL_TYPE_STIRNG) {
-//            if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                isValid = false;
-//            }
-//        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_DATE) {
-//            if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                isValid = false;
-//            }
-//        }
-//        else if (attribute.getControlType() == Attribute.CONTROL_TYPE_BOOLEAN) {
-//            if (hasValidation.equalsIgnoreCase("true") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("yes") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("Ndiyo") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("no") &&
-//                    !StringUtility.empty(value).equalsIgnoreCase("Hapana")
-//                    ) {
-//                isValid = false;
-//            }
-//        }
-//        else if (attribute.getControlType() == Attribute.CONTROL_TYPE_NUMBER) {
-//            if (hasValidation.equalsIgnoreCase("true") && StringUtility.isEmpty(value)) {
-//                isValid = false;
-//            }
-//        } else if (attribute.getControlType() == Attribute.CONTROL_TYPE_SPINNER) {
-//            if (attribute.getLabelName().equalsIgnoreCase("Disputed PersonType")) {
-//                for (int i=0;i<attribute.getOptionsList().size();i++) {
-//                    if (attribute.getOptionsList().get(i).getOptionID() == 1165 || attribute.getId() == 1166) {
-//                        isValid = true;
-//                    }
-//                }
-//            }
-//            else {
-//                if (hasValidation.equalsIgnoreCase("true") && (StringUtility.isEmpty(value) || value.equals("0"))) {
-//                    isValid = false;
-//                }
-//            }
-//        }
-//
-//        if (highlightErrors && attribute.getView() != null) {
-//            if (!isValid) {
-//                attribute.getView().setBackgroundColor(attribute.getView().getContext().getResources().getColor(R.color.lightred));
-//            } else {
-//                if (attribute.getInitialBackground() != null) {
-//                    attribute.getView().setBackground(attribute.getInitialBackground());
-//                } else {
-//                    attribute.getView().setBackgroundColor(attribute.getView().getContext().getResources().getColor(R.color.white));
-//                }
-//            }
-//        }
-//        return isValid;
-//    }
 }

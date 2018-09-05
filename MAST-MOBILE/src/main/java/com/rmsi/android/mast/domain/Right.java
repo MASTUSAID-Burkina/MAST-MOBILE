@@ -30,6 +30,7 @@ public class Right implements Serializable {
     private List<Attribute> attributes = new ArrayList<>();
     private int relationshipId;
     private int acquisitionTypeId;
+    private Integer certTypeId;
 
     public static String TABLE_NAME = "SOCIAL_TENURE";
     public static String COL_ID = "ID";
@@ -39,6 +40,7 @@ public class Right implements Serializable {
     public static String COL_RIGHT_TYPE_ID = "RIGHT_TYPE";
     public static String COL_CERT_NUMBER = "CERT_NUMBER";
     public static String COL_CERT_DATE = "CERT_ISSUE_DATE";
+    public static String COL_CERT_TYPE_ID = "CERT_TYPE_ID";
     public static String COL_JURIDICAL_AREA = "JURIDICAL_AREA";
     public static String COL_RELATIONSHIP_ID = "RELATIONSHIP_ID";
     public static String COL_Acquisition_ID = "Acquisition";
@@ -79,6 +81,14 @@ public class Right implements Serializable {
 
     public void setAcquisitionTypeId(int acquisitionTypeId) {
         this.acquisitionTypeId = acquisitionTypeId;
+    }
+
+    public Integer getCertTypeId() {
+        return certTypeId;
+    }
+
+    public void setCertTypeId(Integer certTypeId) {
+        this.certTypeId = certTypeId;
     }
 
     public void setShareTypeId(int shareTypeId) {
@@ -243,24 +253,19 @@ public class Right implements Serializable {
         boolean result = true;
         String errorMessage = "";
 
-//        if (getRightTypeId() < 1) {
-//            errorMessage = context.getResources().getString(R.string.SelectRightType);
-//        }
-         if (getShareTypeId() < 1) {
+        if (getShareTypeId() < 1) {
             errorMessage = context.getResources().getString(R.string.SelectShareType);
         }
-//        else if (claimTypeCode.equals(ClaimType.TYPE_EXISTING_CLAIM)) {
-//            if (StringUtility.i sEmpty(getCertNumber())) {
-//                errorMessage = context.getResources().getString(R.string.FillCertNumber);
-//            } else if (StringUtility.isEmpty(getCertDate())) {
-//                errorMessage = context.getResources().getString(R.string.SelectCertDate);
-//            } else if (getJuridicalArea() == null || getJuridicalArea() == 0) {
-//                errorMessage = context.getResources().getString(R.string.FillJuridicalArea);
-//            }
-//        }
-//        else if(getShareTypeId() == ShareType.TYPE_MUTIPLE_OCCUPANCY_JOINT && getRelationshipId() < 1){
-//            errorMessage = context.getResources().getString(R.string.SelectRelationshipType);
-//        }
+
+        else if (claimTypeCode.equals(ClaimType.TYPE_EXISTING_CLAIM)) {
+            if (getCertTypeId() == null || getCertTypeId() < 1) {
+                errorMessage = context.getResources().getString(R.string.SelectCertType);
+            } else if (StringUtility.isEmpty(getCertNumber())) {
+                errorMessage = context.getResources().getString(R.string.FillCertNumber);
+            } else if (StringUtility.isEmpty(getCertDate())) {
+                errorMessage = context.getResources().getString(R.string.SelectCertDate);
+            }
+        }
 
         // Attributes
         if(errorMessage.equals("")) {

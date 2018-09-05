@@ -314,16 +314,13 @@ public class CaptureDataMapActivity extends AppCompatActivity implements OnMapRe
         offlineSpatialData = DbController.getInstance(context).getProjectSpatialData();
 
         mLayerTitles.add("Satellite Map");
-        // mLayerTitles.add("Captured features");
         mLayerTitles.add("Parcel");
         mLayerTitles.add("Resource");
         mLayerTitles.add("AOI");
-        //mLayerTitles.add("Offline data");
 
         // This is commented to stop Tanzania MB tiles data as per Jeff comment on 29 Jan 18
         for (int i = 0; i < offlineSpatialData.size(); i++) {
-            mLayerTitles.add(offlineSpatialData.get(i).getFile_Name());
-           // mLayerTitles.add("Liberia Mbtiles");
+            mLayerTitles.add(offlineSpatialData.get(i).getAlias());
         }
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mDrawerList = (ListView) findViewById(R.id.list_layer_manager);

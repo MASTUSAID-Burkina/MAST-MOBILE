@@ -5,24 +5,27 @@ import com.rmsi.android.mast.util.StringUtility;
 
 import java.io.Serializable;
 
-public class ClaimType implements Serializable {
-    private String code;
+public class Village implements Serializable {
+    private Integer id;
     private String name;
-    private String nameOtherLang;
+    private String nameEn;
 
-    public static String TABLE_NAME = "CLAIM_TYPE";
+    public static String TABLE_NAME = "VILLAGE";
+    public static String COL_ID = "ID";
+    public static String COL_NAME = "NAME";
+    public static String COL_NAME_EN = "NAME_EN";
 
     public static String TYPE_NEW_CLAIM = "1";
     public static String TYPE_EXISTING_CLAIM = "2";
     public static String TYPE_UNCLAIMED = "4";
     public static String TYPE_DISPUTE = "3";
 
-    public String getCode() {
-        return code;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -33,23 +36,23 @@ public class ClaimType implements Serializable {
         this.name = name;
     }
 
-    public String getNameOtherLang() {
-        return nameOtherLang;
+    public String getNameEn() {
+        return nameEn;
     }
 
-    public void setNameOtherLang(String nameOtherLang) {
-        this.nameOtherLang = nameOtherLang;
+    public void setNameEn(String nameEn) {
+        this.nameEn = nameEn;
     }
 
-    public ClaimType(){
+    public Village(){
 
     }
 
     @Override
     public String toString(){
         if(CommonFunctions.getInstance().getLocale().equalsIgnoreCase("en")){
-            return StringUtility.empty(getName());
+            return StringUtility.empty(getNameEn());
         }
-        return StringUtility.empty(getNameOtherLang());
+        return StringUtility.empty(getName());
     }
 }

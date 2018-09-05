@@ -215,23 +215,26 @@ public class Person implements Serializable {
         String name = "";
         if (getAttributes() != null && getAttributes().size() > 0) {
             for (Attribute attribute : getAttributes()) {
-                if (attribute.getId() == Person.ATTRIBUTE_FIRST_NAME && !StringUtility.isEmpty(attribute.getValue())) {
+                if (attribute.getId() == Person.ATTRIBUTE_LAST_NAME && !StringUtility.isEmpty(attribute.getValue())) {
                     name = attribute.getValue();
+                    break;
                 }
-                if (attribute.getId() == 1136 && !StringUtility.isEmpty(attribute.getValue())) {
+
+                if (attribute.getId() ==1137&& !StringUtility.isEmpty(attribute.getValue())) {
                     name = attribute.getValue();
+                    break;
                 }
             }
+
             for (Attribute attribute : getAttributes()) {
-                if (attribute.getId() == Person.ATTRIBUTE_LAST_NAME && !StringUtility.isEmpty(attribute.getValue())) {
+                if (attribute.getId() == Person.ATTRIBUTE_FIRST_NAME && !StringUtility.isEmpty(attribute.getValue())) {
                     if (name.equals(""))
                         name = attribute.getValue();
                     else
                         name = name + " " + attribute.getValue();
                     break;
                 }
-
-                if (attribute.getId() ==1137&& !StringUtility.isEmpty(attribute.getValue())) {
+                if (attribute.getId() == 1136 && !StringUtility.isEmpty(attribute.getValue())) {
                     if (name.equals(""))
                         name = attribute.getValue();
                     else

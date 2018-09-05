@@ -12,6 +12,7 @@ public abstract class RefData implements Serializable {
     private int active;
 
     public static String COL_CODE = "CODE";
+    public static String COL_ID = "ID";
     public static String COL_NAME = "NAME";
     public static String COL_NAME_OTHER_LANG = "NAME_OTHER_LANG";
     public static String COL_ACTIVE = "ACTIVE";

@@ -239,10 +239,8 @@ public class PersonListWithDPActivity extends ActionBarActivity {
 
                     Button save = (Button) dialog.findViewById(R.id.btn_ok);
                     final EditText firstName = (EditText) dialog.findViewById(R.id.editTextFirstName);
-                    final EditText middleName = (EditText) dialog.findViewById(R.id.editTextMiddleName);
                     final EditText lastName = (EditText) dialog.findViewById(R.id.editTextLastName);
                     final Spinner genderSpinner = (Spinner) dialog.findViewById(R.id.spinnerGender);
-                    final Spinner relSpinner = (Spinner) dialog.findViewById(R.id.spinnerRelationshipType);
                     final TextView txtDob = (TextView) dialog.findViewById(R.id.txtDob);
                     LinearLayout extraFields = (LinearLayout) dialog.findViewById(R.id.extraLayout);
                     extraFields.setVisibility(View.VISIBLE);
@@ -250,9 +248,7 @@ public class PersonListWithDPActivity extends ActionBarActivity {
                     DbController db = DbController.getInstance(context);
 
                     genderSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, db.getGenders(true)));
-                    relSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, db.getRelationshipTypes(true)));
                     ((ArrayAdapter) genderSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    ((ArrayAdapter) relSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     txtDob.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -268,19 +264,16 @@ public class PersonListWithDPActivity extends ActionBarActivity {
                         @Override
                         public void onClick(View v) {
                             String poi_fName = firstName.getText().toString();
-                            String poi_middleName = middleName.getText().toString();
                             String poi_lastName = lastName.getText().toString();
-                            String name = firstName.getText().toString() + " " + middleName.getText().toString() + " " + lastName.getText().toString();
 
-                            if (!TextUtils.isEmpty(poi_fName) || !TextUtils.isEmpty(poi_middleName) || !TextUtils.isEmpty(poi_lastName)) {
+                            if (!TextUtils.isEmpty(poi_fName) || !TextUtils.isEmpty(poi_lastName)) {
                                 PersonOfInterest poi = new PersonOfInterest();
                                 poi.setFeatureId(featureId);
                                 if(genderSpinner.getSelectedItem() != null)
                                     poi.setGenderId(((Gender)genderSpinner.getSelectedItem()).getCode());
-                                if(relSpinner.getSelectedItem() != null)
-                                    poi.setRelationshipId(((RelationshipType)relSpinner.getSelectedItem()).getCode());
                                 poi.setDob(txtDob.getText().toString());
-                                poi.setName(name);
+                                poi.setFirstName(poi_fName);
+                                poi.setLastName(poi_lastName);
 
                                 boolean result = DbController.getInstance(context).savePersonOfInterest(poi);
                                 if (result) {
@@ -326,7 +319,6 @@ public class PersonListWithDPActivity extends ActionBarActivity {
 
                         Button save = (Button) dialog.findViewById(R.id.btn_ok);
                         final EditText firstName = (EditText) dialog.findViewById(R.id.editTextFirstName);
-                        final EditText middleName = (EditText) dialog.findViewById(R.id.editTextMiddleName);
                         final EditText lastName = (EditText) dialog.findViewById(R.id.editTextLastName);
                         LinearLayout extraFields = (LinearLayout) dialog.findViewById(R.id.extraLayout);
                         extraFields.setVisibility(View.GONE);
@@ -338,15 +330,13 @@ public class PersonListWithDPActivity extends ActionBarActivity {
                             @Override
                             public void onClick(View v) {
                                 String dp_fName = firstName.getText().toString();
-                                String dp_middleName = middleName.getText().toString();
                                 String dp_lastName = lastName.getText().toString();
 
-                                if (!TextUtils.isEmpty(dp_fName) || !TextUtils.isEmpty(dp_middleName) || !TextUtils.isEmpty(dp_lastName)) {
+                                if (!TextUtils.isEmpty(dp_fName) || !TextUtils.isEmpty(dp_lastName)) {
                                     DeceasedPerson person = new DeceasedPerson();
                                     person.setFeatureId(featureId);
                                     person.setFirstName(dp_fName);
                                     person.setLastName(dp_lastName);
-                                    person.setMiddleName(dp_middleName);
 
                                     boolean result = db.saveDeceasedPerson(person);
                                     if (result) {
@@ -449,14 +439,12 @@ public class PersonListWithDPActivity extends ActionBarActivity {
 
         Button save = (Button) dialog.findViewById(R.id.btn_ok);
         final EditText firstName = (EditText) dialog.findViewById(R.id.editTextFirstName);
-        final EditText middleName = (EditText) dialog.findViewById(R.id.editTextMiddleName);
         final EditText lastName = (EditText) dialog.findViewById(R.id.editTextLastName);
         LinearLayout extraFields = (LinearLayout) dialog.findViewById(R.id.extraLayout);
         extraFields.setVisibility(View.GONE);
         save.setText("Save");
 
         firstName.setText(StringUtility.empty(person.getFirstName()));
-        middleName.setText(StringUtility.empty(person.getMiddleName()));
         lastName.setText(StringUtility.empty(person.getLastName()));
 
         save.setOnClickListener(new OnClickListener() {
@@ -464,12 +452,10 @@ public class PersonListWithDPActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 if (!StringUtility.isEmpty(firstName.getText().toString()) ||
-                        !StringUtility.isEmpty(lastName.getText().toString()) ||
-                        !StringUtility.isEmpty(middleName.getText().toString())) {
+                        !StringUtility.isEmpty(lastName.getText().toString())) {
 
                     person.setFirstName(firstName.getText().toString());
                     person.setLastName(lastName.getText().toString());
-                    person.setMiddleName(middleName.getText().toString());
 
                     boolean result = DbController.getInstance(context).saveDeceasedPerson(person);
 

@@ -20,70 +20,11 @@
             android:layout_weight="15"
             android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#CCCCCC" />
-
-            <TextView
-                android:id="@+id/lblRightType"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:padding="5dp"
-                android:visibility="gone"
-                android:text="@string/rightType"
-                android:textColor="@color/color_primary_dark"
-                android:textSize="@dimen/textSize" />
-
-            <Spinner
-                android:id="@+id/spinnerRightType"
-                style="@style/Widget.AppCompat.Spinner"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#CCCCCC" />
-
-            <!--<TextView-->
-                <!--android:id="@+id/lblShareType"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:padding="5dp"-->
-                <!--android:text="@string/shareType"-->
-                <!--android:textColor="@color/color_primary_dark"-->
-                <!--android:textSize="@dimen/textSize" />-->
-            <TextView
-                android:id="@+id/lblAcquisition"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:padding="5dp"
-                android:text="@string/AcquisitionType"
-                android:textColor="@color/color_primary_dark"
-                android:textSize="@dimen/textSize" />
-
-            <Spinner
-                android:id="@+id/spinnerAcquisition"
-                style="@style/Widget.AppCompat.Spinner"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="#CCCCCC" />
-
 
             <LinearLayout
                 android:id="@+id/acquisitionLayout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-
                 android:orientation="vertical">
 
 
@@ -93,8 +34,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:padding="5dp"
-
-                    android:text="Type of Tenure/ Occupancy"
+                    android:text="@string/tenureType"
                     android:textColor="@color/color_primary_dark"
                     android:textSize="@dimen/textSize" />
 
@@ -109,36 +49,6 @@
                     android:layout_height="1dp"
                     android:background="#CCCCCC" />
 
-
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/relationshipLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/lblRelationshipType"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:padding="5dp"
-                    android:text="@string/RelationshipType"
-                    android:textColor="@color/color_primary_dark"
-                    android:textSize="@dimen/textSize" />
-
-                <Spinner
-                    android:id="@+id/spinnerRelationshipType"
-                    style="@style/Widget.AppCompat.Spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#CCCCCC" />
             </LinearLayout>
 
             <LinearLayout
@@ -147,6 +57,28 @@
                 android:layout_height="wrap_content"
                 android:visibility="gone"
                 android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/lblCertType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:padding="5dp"
+                    android:text="@string/certType"
+                    android:textColor="@color/color_primary_dark"
+                    android:textSize="@dimen/textSize" />
+
+                <Spinner
+                    android:id="@+id/spinnerCertType"
+                    style="@style/Widget.AppCompat.Spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <View
+                    android:id="@+id/lineCertType"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#CCCCCC" />
 
                 <TextView
                     android:id="@+id/lblCertNumber"
@@ -195,30 +127,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
                     android:background="#CCCCCC" />
-
-                <TextView
-                    android:id="@+id/lblJuridicalArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:padding="5dp"
-                    android:text="@string/juridicalArea"
-                    android:textColor="@color/color_primary_dark"
-                    android:textSize="@dimen/textSize" />
-
-                <EditText
-                    android:id="@+id/txtJuridicalArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="numberDecimal"
-                    android:padding="5dp" />
-
-                <View
-                    android:id="@+id/lineJuridicalArea"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#CCCCCC" />
-
             </LinearLayout>
 
         </LinearLayout>

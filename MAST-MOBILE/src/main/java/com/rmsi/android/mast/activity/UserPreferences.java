@@ -38,16 +38,14 @@ public class UserPreferences extends ActionBarActivity {
     String dct = "";
     private String corrdinates = null;
 
-    Editor editor;
     Dialog dialog = null;
     boolean auto;
     SharedPreferences sharedpreferences;
-    SparseBooleanArray checkedPos_cdct;
     InputStream in ;
     InputStreamReader isr ;
-    private String drawFeatureByFlagGPS;
     CommonFunctions commonFunctions;
     boolean isReview=false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,13 +60,8 @@ public class UserPreferences extends ActionBarActivity {
         setContentView(R.layout.activity_user_preferences);
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-
             isReview=extras.getBoolean("IsReview");
-
-
         }
-
-
 
         sharedpreferences = cf.getmMyPreferences();
         Resources res = getResources();
@@ -125,7 +118,7 @@ public class UserPreferences extends ActionBarActivity {
                         if (lang.equalsIgnoreCase("en")) {
 
                             listViewForLanguage.setItemChecked(0, true);
-                        } else if (lang.equalsIgnoreCase("sw"))
+                        } else if (lang.equalsIgnoreCase("fr"))
 
                         {
                             listViewForLanguage.setItemChecked(1, true);
@@ -141,7 +134,7 @@ public class UserPreferences extends ActionBarActivity {
                                     lang = "en";
                                 } else if (itemPosition == 1) // for sw
                                 {
-                                    lang = "sw";
+                                    lang = "fr";
                                 }
                             }
                         });
@@ -153,65 +146,6 @@ public class UserPreferences extends ActionBarActivity {
                     }
                 }
 
-//                if (position == 1) {
-//                    try {
-//                        final String[] option = getResources().getStringArray(R.array.add_options_arrays);
-//
-//                        final Dialog dialog = new Dialog(context, R.style.DialogTheme);
-//                        dialog.setContentView(R.layout.dialog_show_list);
-//                        dialog.setTitle(getResources().getString(R.string.configure_data));
-//                        dialog.getWindow().getAttributes().width = LayoutParams.MATCH_PARENT;
-//                        final ListView listViewForCapture = (ListView) dialog.findViewById(R.id.commonlistview);
-//                        Button btn_ok = (Button) dialog.findViewById(R.id.btn_ok);
-//                        ArrayAdapter<String> adapter = new ArrayAdapter<String>(context, R.layout.item_list_multiple_choice, option);
-//                        listViewForCapture.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-//
-//                        listViewForCapture.setAdapter(adapter);
-//
-//                        //listViewForCapture.setItemChecked(0, true);
-//
-//                        btn_ok.setOnClickListener(new OnClickListener() {
-//                            //Run when button is clicked
-//                            @Override
-//                            public void onClick(View v) {
-//                                dialog.dismiss();
-//                                dct = "";
-//                                checkedPos_cdct = listViewForCapture.getCheckedItemPositions();
-//                                for (int i = 0; i < option.length; i++) {
-//                                    if (checkedPos_cdct.indexOfKey(i) != -1) {
-//                                        if (checkedPos_cdct.get(i)) {
-//                                            if (!dct.isEmpty())
-//                                                dct = dct + ",";
-//
-//                                            //dct = dct + option[i];
-//                                            dct = dct + i;
-//                                        }
-//                                    }
-//                                }
-//                                cf.saveDataCollectionTools(dct);
-//                            }
-//
-//                        });
-//
-//                        if (dct.contains("0")) {
-//                            listViewForCapture.setItemChecked(0, true);
-//                        }
-//
-//
-//                        if (dct.contains("1")) {
-//                            listViewForCapture.setItemChecked(1, true);
-//                        }
-//
-//
-//                        if (dct.contains("2")) {
-//                            listViewForCapture.setItemChecked(2, true);
-//                        }
-//
-//                        dialog.show();
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }
                 if (position == 1) {
                     try {
                         String[] sync = getResources().getStringArray(R.array.Sync_arrays);

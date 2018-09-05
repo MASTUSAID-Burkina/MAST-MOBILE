@@ -14,54 +14,6 @@
     android:layout_height="0dp"
     android:layout_weight="9">
 
-    <TableRow
-        android:id="@+id/tableRowClaimNumber"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/lblClaimNumber"
-            android:layout_weight="1"
-            android:gravity="left"
-            android:padding="5dip"
-            android:text="@string/Claim"
-            android:textColor="#000000"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtClaimNumber"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:padding="10dip"
-            android:textColor="#000000"
-            android:textStyle="bold" />
-    </TableRow>
-
-
-
-        <TableRow
-
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/ClaimNumber"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:padding="5dip"
-                android:text="Claim Number"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/ClaimNumberText"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dip"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-        </TableRow>
-
         <TableRow
             android:id="@+id/tableRowClaimType"
             android:layout_width="fill_parent"
@@ -86,21 +38,21 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/tableRowClaimDate"
+            android:id="@+id/rowOccupation"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/lblClaimDate"
+                android:id="@+id/TextView01"
                 android:layout_weight="1"
                 android:gravity="left"
                 android:padding="5dip"
-                android:text="@string/surveyDate"
+                android:text="@string/shareType"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/txtClaimDate"
+                android:id="@+id/TextView_tenureRelation"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dip"
@@ -178,29 +130,6 @@
         </TableRow>
 
         <TableRow
-            android:id="@+id/rowOccupation"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/TextView01"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:padding="5dip"
-                android:text="@string/shareType"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/TextView_tenureRelation"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dip"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
             android:id="@+id/rowNaturalPersons"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content">
@@ -216,75 +145,6 @@
 
             <TextView
                 android:id="@+id/TextView_countNaturalPerson"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dip"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rowOwners"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/TextView15"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:padding="10dip"
-                android:text="@string/data_summary_label1_owner"
-                android:textColor="#000000" />
-
-            <TextView
-                android:id="@+id/TextView_owner_count"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dip"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rowAdministrators"
-            android:layout_width="fill_parent"
-            android:visibility="gone"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/TextView07"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:padding="10dip"
-                android:text="@string/data_summary_label4_admin"
-                android:textColor="#000000" />
-
-            <TextView
-                android:id="@+id/TextView_admin_count"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dip"
-                android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:id="@+id/rowGuardians"
-            android:layout_width="fill_parent"
-            android:visibility="gone"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/TextView09"
-                android:layout_marginLeft="15dp"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:padding="10dip"
-                android:text="@string/data_summary_label5_Guardian"
-                android:textColor="#000000" />
-
-            <TextView
-                android:id="@+id/TextView_countGuardian"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dip"
@@ -313,29 +173,6 @@
                 android:padding="10dip"
                 android:textStyle="bold" />
         </TableRow>
-
-        <TableRow
-            android:id="@+id/rowNonNatural"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/TextView17"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:padding="5dip"
-                android:text="@string/data_summary_label4"
-                android:textColor="#000000"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/TextView_countNonNatural"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="10dip"
-                android:textStyle="bold" />
-        </TableRow>
-
 
         <TableRow
             android:id="@+id/rowMedia"

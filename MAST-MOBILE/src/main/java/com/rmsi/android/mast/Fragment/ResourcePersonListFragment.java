@@ -112,7 +112,7 @@ public class ResourcePersonListFragment extends ListFragment implements ListActi
         PopupMenu popup = new PopupMenu(context, v);
         MenuInflater inflater = popup.getMenuInflater();
         if (!readOnly) {
-            inflater.inflate(R.menu.attribute_listing_options_for_person, popup.getMenu());
+            inflater.inflate(R.menu.attribute_listing_options_for_resourse_person, popup.getMenu());
         } else {
             inflater.inflate(R.menu.attribute_listing_options_to_view_details, popup.getMenu());
         }

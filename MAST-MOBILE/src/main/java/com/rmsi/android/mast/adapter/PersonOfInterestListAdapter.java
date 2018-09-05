@@ -71,8 +71,11 @@ public class PersonOfInterestListAdapter extends BaseAdapter {
     private String getPoiName(PersonOfInterest person){
         String name = "";
         if(person != null){
-            name = StringUtility.empty(person.getName());
-            name=name.replace(","," ");
+            name = StringUtility.empty(person.getFirstName());
+            if(!StringUtility.isEmpty(person.getMiddleName())) {
+                name += " " + StringUtility.empty(person.getMiddleName());
+            }
+            name += " " + StringUtility.empty(person.getLastName());
             if(person.getRelationshipId() > 0 && relTypes != null){
                 for(RelationshipType relType : relTypes){
                     if(relType.getCode() == person.getRelationshipId()){

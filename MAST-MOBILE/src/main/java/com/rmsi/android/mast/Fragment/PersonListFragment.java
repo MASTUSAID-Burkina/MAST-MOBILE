@@ -18,6 +18,7 @@ import android.os.Environment;
 import android.os.StrictMode;
 import android.provider.MediaStore;
 import android.app.ListFragment;
+import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.view.LayoutInflater;
@@ -62,6 +63,12 @@ public class PersonListFragment extends ListFragment implements ListActivity {
     private int position = 0;
     private boolean readOnly = false;
 
+    OnPersonDeletedListener mPersonDeleteCallback;
+
+    public interface OnPersonDeletedListener {
+        public void onPersonDeleted();
+    }
+
     public PersonListFragment() {
     }
 
@@ -72,14 +79,9 @@ public class PersonListFragment extends ListFragment implements ListActivity {
         StrictMode.VmPolicy.Builder builder = new StrictMode.VmPolicy.Builder();
         StrictMode.setVmPolicy(builder.build());
         if (ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-
-
                 requestPermissions(new String[]{Manifest.permission.CAMERA},
                         1024);
             }
-
-
-
     }
 
     @Override
@@ -118,93 +120,13 @@ public class PersonListFragment extends ListFragment implements ListActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.edit_attributes:
-
-
-//                        Intent myIntent = new Intent(context, AddPersonActivity.class);
-//                        myIntent.putExtra("groupid", person.getId());
-//                        myIntent.putExtra("featureid", person.getFeatureId());
-//                        myIntent.putExtra("subTypeId", person.getSubTypeId());
-//                        myIntent.putExtra("rightId", person.getRightId());
-//                        myIntent.putExtra("disputeId", person.getDisputeId());
-//                        startActivity(myIntent);
-
-
-                        int personType=DbController.getInstance(context).getpersonType(person.getFeatureId());
-                        if (personType==1) {
-                            Intent myIntent = new Intent(context, AddPersonActivity.class);
-                            myIntent.putExtra("groupid", person.getId());
-                            myIntent.putExtra("featureid", person.getFeatureId());
-                            myIntent.putExtra("subTypeId", person.getSubTypeId());
-                            myIntent.putExtra("rightId", person.getRightId());
-                            myIntent.putExtra("disputeId", person.getDisputeId());
-                            startActivity(myIntent);
-                        }
-                        else if (personType==2){
-                            Intent myIntent = new Intent(context, AddNonNaturalActivity.class);
-                            myIntent.putExtra("groupid", person.getId());
-                            myIntent.putExtra("featureid", person.getFeatureId());
-                            myIntent.putExtra("subTypeId", person.getSubTypeId());
-                            myIntent.putExtra("rightId", person.getRightId());
-                            myIntent.putExtra("disputeId", person.getDisputeId());
-                            startActivity(myIntent);
-                        }
+                        Intent myIntent = new Intent(context, AddPersonActivity.class);
+                        myIntent.putExtra("groupid", person.getId());
+                        myIntent.putExtra("featureid", person.getFeatureId());
+                        myIntent.putExtra("rightId", person.getRightId());
+                        myIntent.putExtra("disputeId", person.getDisputeId());
+                        startActivity(myIntent);
                         return true;
-                    case R.id.add_image:
-                        if (person.getMedia() != null && person.getMedia().size() > 0) {
-                            CommonFunctions.getInstance()
-                                    .showMessage(context,
-                                            getResources().getString(R.string.info),
-                                            getResources().getString(R.string.you_can_add_only_one_photo)
-                                    );
-                        }
-                        else {
-                            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                                timeStamp = new SimpleDateFormat("MMdd_HHmmss").format(new Date().getTime());
-                                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                file = new File(mediaFolderName + File.separator + "mast_" + timeStamp + ".jpg");
-                                if (file != null) {
-
-                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-//                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,  FileProvider.getUriForFile(getActivity(),
-//                                            BuildConfig.APPLICATION_ID + ".provider",
-//                                            file));
-                                    cameraIntent.putExtra("ID", person.getId());
-//                                startActivityForResult(cameraIntent, 1);
-                                    cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                                    if (cameraIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
-                                        startActivityForResult(cameraIntent, 1);
-                                    }
-                                } else {
-                                    Toast.makeText(context, getResources().getString(R.string.unable_to_capture), Toast.LENGTH_LONG).show();
-                                }
-                            }
-                            else{
-
-                                timeStamp = new SimpleDateFormat("MMdd_HHmmss").format(new Date().getTime());
-                                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                                file = new File(mediaFolderName + File.separator + "mast_" + timeStamp + ".jpg");
-                                if (file != null) {
-                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(file));
-//                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT,  FileProvider.getUriForFile(getActivity(),
-//                                            BuildConfig.APPLICATION_ID + ".provider",
-//                                            file));
-                                    cameraIntent.putExtra("ID", person.getId());
-                                    startActivityForResult(cameraIntent, 1);
-                                    //cameraIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-//                                    if (cameraIntent.resolveActivity(getApplicationContext().getPackageManager()) != null) {
-//                                        startActivityForResult(cameraIntent, 1);
-//                                    }
-                                } else {
-                                    Toast.makeText(context, getResources().getString(R.string.unable_to_capture), Toast.LENGTH_LONG).show();
-                                }
-                            }
-                        }
-                        return true;
-
-                    case R.id.delete_photo:
-                        deletePhoto(person);
-                        return true;
-
                     case R.id.delete_entry:
                         delete(person);
                         return true;
@@ -213,7 +135,6 @@ public class PersonListFragment extends ListFragment implements ListActivity {
                         Intent intent = new Intent(context, AddPersonActivity.class);
                         intent.putExtra("groupid", person.getId());
                         intent.putExtra("featureid", person.getFeatureId());
-                        intent.putExtra("personSubType", person.getSubTypeId());
                         intent.putExtra("rightId", person.getRightId());
                         intent.putExtra("readOnly", true);
                         startActivity(intent);
@@ -367,6 +288,7 @@ public class PersonListFragment extends ListFragment implements ListActivity {
                             public void onClick(DialogInterface arg0, int arg1) {
                                 if (DbController.getInstance(context).deletePerson(person.getId())) {
                                     persons.remove(person);
+                                    mPersonDeleteCallback.onPersonDeleted();
                                     refresh();
                                 } else {
                                     Toast.makeText(context, "Unable to delete", Toast.LENGTH_SHORT).show();
@@ -457,6 +379,10 @@ public class PersonListFragment extends ListFragment implements ListActivity {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+    }
+
+    public void addDeleteListener(OnPersonDeletedListener listener){
+        mPersonDeleteCallback = listener;
     }
 
     @Override

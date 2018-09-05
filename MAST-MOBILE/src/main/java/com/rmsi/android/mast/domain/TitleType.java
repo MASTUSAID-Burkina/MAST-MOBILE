@@ -5,24 +5,19 @@ import com.rmsi.android.mast.util.StringUtility;
 
 import java.io.Serializable;
 
-public class ClaimType implements Serializable {
-    private String code;
+public class TitleType implements Serializable {
+    private int id;
     private String name;
     private String nameOtherLang;
 
-    public static String TABLE_NAME = "CLAIM_TYPE";
+    public static String TABLE_NAME = "TITLE_TYPE";
 
-    public static String TYPE_NEW_CLAIM = "1";
-    public static String TYPE_EXISTING_CLAIM = "2";
-    public static String TYPE_UNCLAIMED = "4";
-    public static String TYPE_DISPUTE = "3";
-
-    public String getCode() {
-        return code;
+    public int getId() {
+        return id;
     }
 
-    public void setCode(String code) {
-        this.code = code;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -41,7 +36,7 @@ public class ClaimType implements Serializable {
         this.nameOtherLang = nameOtherLang;
     }
 
-    public ClaimType(){
+    public TitleType(){
 
     }
 

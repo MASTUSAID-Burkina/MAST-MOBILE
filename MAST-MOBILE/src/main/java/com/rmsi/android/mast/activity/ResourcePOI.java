@@ -491,10 +491,8 @@ public class ResourcePOI extends ActionBarActivity {
 
                         Button save = (Button) dialog.findViewById(R.id.btn_ok);
                         final EditText firstName = (EditText) dialog.findViewById(R.id.editTextFirstName);
-                        final EditText middleName = (EditText) dialog.findViewById(R.id.editTextMiddleName);
                         final EditText lastName = (EditText) dialog.findViewById(R.id.editTextLastName);
                         final Spinner genderSpinner = (Spinner) dialog.findViewById(R.id.spinnerGender);
-                        final Spinner relSpinner = (Spinner) dialog.findViewById(R.id.spinnerRelationshipType);
                         final TextView txtDob = (TextView) dialog.findViewById(R.id.txtDob);
                         LinearLayout extraFields = (LinearLayout) dialog.findViewById(R.id.extraLayout);
                         extraFields.setVisibility(View.VISIBLE);
@@ -502,9 +500,7 @@ public class ResourcePOI extends ActionBarActivity {
                         DbController db = DbController.getInstance(context);
 
                         genderSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, db.getGenders(true)));
-                        relSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, db.getRelationshipTypes(true)));
                         ((ArrayAdapter) genderSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                        ((ArrayAdapter) relSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                         txtDob.setOnClickListener(new View.OnClickListener() {
                             @Override
@@ -520,11 +516,10 @@ public class ResourcePOI extends ActionBarActivity {
                             @Override
                             public void onClick(View v) {
                                 String poi_fName = firstName.getText().toString();
-                                String poi_middleName = middleName.getText().toString();
                                 String poi_lastName = lastName.getText().toString();
-                                String name = firstName.getText().toString() + " " + middleName.getText().toString() + " " + lastName.getText().toString();
+                                String name = firstName.getText().toString() + " " + lastName.getText().toString();
 
-                                if (!TextUtils.isEmpty(poi_fName) || !TextUtils.isEmpty(poi_middleName) || !TextUtils.isEmpty(poi_lastName)) {
+                                if (!TextUtils.isEmpty(poi_fName) || !TextUtils.isEmpty(poi_lastName)) {
                                     Property property = new Property();
                                     List<ResourcePoiSync> resourcePoiSyncs = new ArrayList<>();
                                     ResourcePersonOfInterest poi = new ResourcePersonOfInterest();
@@ -543,7 +538,6 @@ public class ResourcePOI extends ActionBarActivity {
 //                            resourcePoiSyncsList.add(property);
 
                                     resourcePoiSync2.setId((long) 2);
-                                    resourcePoiSync2.setValue(poi_middleName);
                                     resourcePoiSyncs.add(resourcePoiSync2);
 
                                     resourcePoiSync3.setId((long) 3);
@@ -559,10 +553,7 @@ public class ResourcePOI extends ActionBarActivity {
                                     resourcePoiSync4.setValue(((Gender) genderSpinner.getSelectedItem()).getName());
                                     resourcePoiSyncs.add(resourcePoiSync4);
 
-                                    if (relSpinner.getSelectedItem() != null)
-                                        poi.setRelationshipId(((RelationshipType) relSpinner.getSelectedItem()).getCode());
                                     resourcePoiSync5.setId((long) 5);
-                                    resourcePoiSync5.setValue(((RelationshipType) relSpinner.getSelectedItem()).getName());
                                     resourcePoiSyncs.add(resourcePoiSync5);
 
                                     poi.setDob(txtDob.getText().toString());
@@ -607,10 +598,8 @@ public class ResourcePOI extends ActionBarActivity {
 
                     Button save = (Button) dialog.findViewById(R.id.btn_ok);
                     final EditText firstName = (EditText) dialog.findViewById(R.id.editTextFirstName);
-                    final EditText middleName = (EditText) dialog.findViewById(R.id.editTextMiddleName);
                     final EditText lastName = (EditText) dialog.findViewById(R.id.editTextLastName);
                     final Spinner genderSpinner = (Spinner) dialog.findViewById(R.id.spinnerGender);
-                    final Spinner relSpinner = (Spinner) dialog.findViewById(R.id.spinnerRelationshipType);
                     final TextView txtDob = (TextView) dialog.findViewById(R.id.txtDob);
                     LinearLayout extraFields = (LinearLayout) dialog.findViewById(R.id.extraLayout);
                     extraFields.setVisibility(View.VISIBLE);
@@ -618,9 +607,7 @@ public class ResourcePOI extends ActionBarActivity {
                     DbController db = DbController.getInstance(context);
 
                     genderSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, db.getGenders(true)));
-                    relSpinner.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, db.getRelationshipTypes(true)));
                     ((ArrayAdapter) genderSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    ((ArrayAdapter) relSpinner.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                     txtDob.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -636,32 +623,23 @@ public class ResourcePOI extends ActionBarActivity {
                         @Override
                         public void onClick(View v) {
                             String poi_fName = firstName.getText().toString();
-                            String poi_middleName = middleName.getText().toString();
                             String poi_lastName = lastName.getText().toString();
-                            String name = firstName.getText().toString() + " " + middleName.getText().toString() + " " + lastName.getText().toString();
+                            String name = firstName.getText().toString() + " " + lastName.getText().toString();
                             ResourcePersonOfInterest poi = new ResourcePersonOfInterest();
 
-                            if (!TextUtils.isEmpty(poi_fName) || !TextUtils.isEmpty(poi_middleName) || !TextUtils.isEmpty(poi_lastName)) {
+                            if (!TextUtils.isEmpty(poi_fName) || !TextUtils.isEmpty(poi_lastName)) {
                                 Property property = new Property();
                                 List<ResourcePoiSync> resourcePoiSyncs = new ArrayList<>();
 
                                 ResourcePoiSync resourcePoiSync1 = new ResourcePoiSync();
-                                ResourcePoiSync resourcePoiSync2 = new ResourcePoiSync();
                                 ResourcePoiSync resourcePoiSync3 = new ResourcePoiSync();
                                 ResourcePoiSync resourcePoiSync4 = new ResourcePoiSync();
-                                ResourcePoiSync resourcePoiSync5 = new ResourcePoiSync();
                                 ResourcePoiSync resourcePoiSync6 = new ResourcePoiSync();
 
 
                                 resourcePoiSync1.setId((long) 1);
                                 resourcePoiSync1.setValue(poi_fName);
                                 resourcePoiSyncs.add(resourcePoiSync1);
-//                            property.setResPOI(resourcePoiSyncs);
-//                            resourcePoiSyncsList.add(property);
-
-                                resourcePoiSync2.setId((long) 2);
-                                resourcePoiSync2.setValue(poi_middleName);
-                                resourcePoiSyncs.add(resourcePoiSync2);
 
                                 resourcePoiSync3.setId((long) 3);
                                 resourcePoiSync3.setValue(poi_lastName);
@@ -677,15 +655,7 @@ public class ResourcePOI extends ActionBarActivity {
                                     resourcePoiSyncs.add(resourcePoiSync4);
                                 }
 
-                                if (relSpinner.getSelectedItem() != null) {
-                                    poi.setRelationshipId(((RelationshipType) relSpinner.getSelectedItem()).getCode());
-                                    resourcePoiSync5.setId((long) 5);
-                                    resourcePoiSync5.setValue(((RelationshipType) relSpinner.getSelectedItem()).getName());
-                                    resourcePoiSyncs.add(resourcePoiSync5);
-                                }
-
-                                if (poi.getGenderId()==0 ||poi.getRelationshipId()==0) {
-                                    //Toast.makeText(context,"Please Select the Gender",Toast.LENGTH_SHORT).show();
+                                if (poi.getGenderId()==0) {
                                     msg = getResources().getString(R.string.enter_details);
                                     Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
                                 }else {

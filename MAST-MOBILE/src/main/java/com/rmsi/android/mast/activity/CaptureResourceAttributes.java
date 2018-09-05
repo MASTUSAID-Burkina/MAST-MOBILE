@@ -131,7 +131,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-               classificationData=new ClassificationAttribute();
+                classificationData=new ClassificationAttribute();
                 classificationData.setAttribValue(((ClassificationAttribute) parent.getItemAtPosition(position)).getAttribValue());
                 classificationData.setAttribID(((ClassificationAttribute) parent.getItemAtPosition(position)).getAttribID());
 
@@ -181,7 +181,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-                 tenureTypenData=new ClassificationAttribute();
+                tenureTypenData=new ClassificationAttribute();
 
                 tenureTypenData.setAttribValue(((TenureType) parent.getItemAtPosition(position)).getAttribValue());
                 tenureTypenData.setAttribID(((TenureType) parent.getItemAtPosition(position)).getAttribID().toString());
@@ -192,7 +192,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                 propertyValidate.setTenureTypeID(((TenureType) parent.getItemAtPosition(position)).getAttribID());
 
 
-               // tenureList.add(property);
+                // tenureList.add(property);
 //                tenureType=(String) parent.getItemAtPosition(position);
 //                propertyValidate.setSubClassificationValue(tenureType);
 
@@ -253,7 +253,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-            getMenuInflater().inflate(R.menu.save, menu);
+        getMenuInflater().inflate(R.menu.save, menu);
         return true;
     }
 
@@ -269,24 +269,13 @@ public class CaptureResourceAttributes extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void
+    private void saveData() {
 
-
-
-
-
-    saveData() {
-
-//        if (!validateBasicInfo(context, true)) {
-//            return false;
-//        }
-        //.add(property);
         if (validateBasicInfo(context, true)) {
 
 
             boolean deleteData=DbController.getInstance(context).deleteResource(featureId);
 
-//            boolean saveResult = DbController.getInstance(context).insertResourceAtrr(propertyList, featureId);
             boolean saveResult = DbController.getInstance(context).insertResourceAtrrValue(classificationData, featureId);
             boolean saveResultsub = DbController.getInstance(context).insertResourceAtrrValue(subClassificationData, featureId);
             boolean saveResultTenure = DbController.getInstance(context).insertResourceAtrrValue(tenureTypenData, featureId);
@@ -443,25 +432,6 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                     }
 
                 }
-
-
-
-//          dialog.show();
-//        } else if (shareTypeId == ShareType.TYPE_NON_NATURAL) {
-//            Intent nextScreen = new Intent(context, AddNonNaturalPersonActivity.class);
-//            nextScreen.putExtra("featureid", featureId);
-//            nextScreen.putExtra("rightId", right.getId());
-//            startActivity(nextScreen);
-
-//            Toast.makeText(context,"DATA SAVE Successfully",Toast.LENGTH_SHORT).show();
-//            Intent intent=new Intent(getApplicationContext(),CaptureTenureInfo.class);
-//            intent.putExtra("featureid", featureId);
-//            intent.putExtra("classi", classi);
-//            intent.putExtra("subclassi", subClassi);
-//            intent.putExtra("tenure", tenureType);
-//            intent.putExtra("tID",tenureID);
-//            intent.putExtra("sID",subID);
-//            startActivity(intent);
             } else {
                 Toast.makeText(context, "Unable to Save Data", Toast.LENGTH_SHORT).show();
             }
@@ -499,55 +469,33 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
     private boolean validateBasicInfo(Context context, boolean b) {
 
-            boolean result = true;
-            String errorMessage = "";
+        boolean result = true;
+        String errorMessage = "";
 
 
-            if (StringUtility.isEmpty(propertyValidate.getClassificationValue())) {
+        if (StringUtility.isEmpty(propertyValidate.getClassificationValue())) {
 
-                errorMessage = context.getResources().getString(R.string.SelectClassificationType);
-            }else if (propertyValidate.getClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
-                errorMessage = context.getResources().getString(R.string.SelectClassificationType);
-            }
-            else if (StringUtility.isEmpty(propertyValidate.getSubClassificationValue())) {
-                errorMessage = context.getResources().getString(R.string.SelectSubClassificationType);
-            }else if (propertyValidate.getSubClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
-                errorMessage = context.getResources().getString(R.string.SelectSubClassificationType);
-            }else if (propertyValidate.getTenureTypeValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
-                errorMessage = context.getResources().getString(R.string.SelectTENUREType);
-            }
-            else if (StringUtility.isEmpty(propertyValidate.getTenureTypeValue())) {
-                errorMessage = context.getResources().getString(R.string.SelectTENUREType);
-            }
-//        else if (getHamletId() == 0L) {
-//            errorMessage = context.getResources().getString(R.string.Please_select_Hamlet);
-//        } else if (StringUtility.isEmpty(getAdjudicator1())) {
-//            errorMessage = context.getResources().getString(R.string.Please_select_Witness_1);
-//        } else if (StringUtility.isEmpty(getAdjudicator2())) {
-//            errorMessage = context.getResources().getString(R.string.Please_select_Witness_2);
-//        } else if (getAdjudicator1() == getAdjudicator2()) {
-//            errorMessage = context.getResources().getString(R.string.Witness_1_and_Witness_2_can_not_be_same);
-//        }
-
-            if (!errorMessage.equals("")) {
-                result = false;
-                if (b)
-                    CommonFunctions.getInstance().showToast(context, errorMessage, Toast.LENGTH_LONG, Gravity.CENTER);
-            }
-            return result;
+            errorMessage = context.getResources().getString(R.string.SelectClassificationType);
+        }else if (propertyValidate.getClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
+            errorMessage = context.getResources().getString(R.string.SelectClassificationType);
+        }
+        else if (StringUtility.isEmpty(propertyValidate.getSubClassificationValue())) {
+            errorMessage = context.getResources().getString(R.string.SelectSubClassificationType);
+        }else if (propertyValidate.getSubClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
+            errorMessage = context.getResources().getString(R.string.SelectSubClassificationType);
+        }else if (propertyValidate.getTenureTypeValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
+            errorMessage = context.getResources().getString(R.string.SelectTENUREType);
+        }
+        else if (StringUtility.isEmpty(propertyValidate.getTenureTypeValue())) {
+            errorMessage = context.getResources().getString(R.string.SelectTENUREType);
         }
 
-    private void updateCount() {
-        try {
-
-
-                Property tmpProp = db.getProperty(featureId);
-
-
-        } catch (Exception e) {
-
-            e.printStackTrace();
+        if (!errorMessage.equals("")) {
+            result = false;
+            if (b)
+                CommonFunctions.getInstance().showToast(context, errorMessage, Toast.LENGTH_LONG, Gravity.CENTER);
         }
+        return result;
     }
 
     @Override
@@ -561,10 +509,6 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
         if (propertyValidate != null && !StringUtility.isEmpty(propertyValidate.getTenureTypeID()))
             spinnertenureType.setEnabled(true);
-
-        updateCount();
-                    // Don't show toolbar for unclaimed parcels
-
     }
 
 }

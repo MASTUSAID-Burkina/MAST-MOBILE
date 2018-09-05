@@ -30,11 +30,11 @@ public class DataSummaryActivity extends ActionBarActivity {
     Long featureId = 0L;
     Context context = this;
     CommonFunctions cf = CommonFunctions.getInstance();
-    TextView personCount, mediaCount, tenureRaltion, customStatus, adminCountTxt, propertyStatus,
-            guardianCountTxt, countPOITxt, ownerCountTxt, nonNaturalCount, txtDisputingPersons;
+    TextView personCount, mediaCount, tenureRaltion, customStatus, propertyStatus,
+            countPOITxt, txtDisputingPersons;
     String classname = "summaryForAll";
     Button btnClose;
-    TableRow rowOwners, rowAdministrators, rowGuardians, rowPoi, rowNonNatural;
+    TableRow rowPoi;
     String yesStr, noStr;
     private Property property = null;
     private boolean customAttributesExist = false;
@@ -84,19 +84,12 @@ public class DataSummaryActivity extends ActionBarActivity {
         mediaCount = (TextView) findViewById(R.id.TextView_countMultimedia);
         tenureRaltion = (TextView) findViewById(R.id.TextView_tenureRelation);
         customStatus = (TextView) findViewById(R.id.TextView_custom);
-        adminCountTxt = (TextView) findViewById(R.id.TextView_admin_count);
         propertyStatus = (TextView) findViewById(R.id.TextView_propertyStatus);
-        guardianCountTxt = (TextView) findViewById(R.id.TextView_countGuardian);
         countPOITxt = (TextView) findViewById(R.id.TextView_countPOI);
-        ownerCountTxt = (TextView) findViewById(R.id.TextView_owner_count);
-        nonNaturalCount = (TextView) findViewById(R.id.TextView_countNonNatural);
         Button btn_edit = (Button) findViewById(R.id.edit_attributes);
         btnClose = (Button) findViewById(R.id.btnClose);
-        TextView txtClaimNumber = (TextView) findViewById(R.id.txtClaimNumber);
         TextView txtClaimType = (TextView) findViewById(R.id.txtClaimType);
-        TextView txtClaimDate = (TextView) findViewById(R.id.txtClaimDate);
         TextView txtDisputeType = (TextView) findViewById(R.id.txtDisputeType);
-        TextView txtClaimNumberInput= (TextView) findViewById(R.id.ClaimNumberText);
         txtDisputingPersons = (TextView) findViewById(R.id.txtDisputingPersons);
 
         TableRow rowProperty = (TableRow) findViewById(R.id.rowProperty);
@@ -106,10 +99,6 @@ public class DataSummaryActivity extends ActionBarActivity {
         TableRow rowCustom = (TableRow) findViewById(R.id.rowCustom);
         TableRow rowDisputeType = (TableRow) findViewById(R.id.rowDisputeType);
         TableRow rowDisputingPersons = (TableRow) findViewById(R.id.rowDisputingPersons);
-        rowNonNatural = (TableRow) findViewById(R.id.rowNonNatural);
-        rowOwners = (TableRow) findViewById(R.id.rowOwners);
-        rowAdministrators = (TableRow) findViewById(R.id.rowAdministrators);
-        rowGuardians = (TableRow) findViewById(R.id.rowGuardians);
         rowPoi = (TableRow) findViewById(R.id.rowPoi);
 
         // Hide rows for unclaimed
@@ -119,10 +108,6 @@ public class DataSummaryActivity extends ActionBarActivity {
             rowNaturalPersons.setVisibility(View.GONE);
             rowMedia.setVisibility(View.GONE);
             rowCustom.setVisibility(View.GONE);
-            rowNonNatural.setVisibility(View.GONE);
-            rowOwners.setVisibility(View.GONE);
-            rowAdministrators.setVisibility(View.GONE);
-            rowGuardians.setVisibility(View.GONE);
             rowPoi.setVisibility(View.GONE);
             rowDisputeType.setVisibility(View.GONE);
             rowDisputingPersons.setVisibility(View.GONE);
@@ -130,10 +115,6 @@ public class DataSummaryActivity extends ActionBarActivity {
             rowOccupation.setVisibility(View.GONE);
             rowNaturalPersons.setVisibility(View.GONE);
             rowCustom.setVisibility(View.GONE);
-            rowNonNatural.setVisibility(View.GONE);
-            rowOwners.setVisibility(View.GONE);
-            rowAdministrators.setVisibility(View.GONE);
-            rowGuardians.setVisibility(View.GONE);
             rowPoi.setVisibility(View.GONE);
 
             // Set dispute type
@@ -145,29 +126,6 @@ public class DataSummaryActivity extends ActionBarActivity {
         } else {
             rowDisputeType.setVisibility(View.GONE);
             rowDisputingPersons.setVisibility(View.GONE);
-
-            if (property.getRight().getNonNaturalPerson() != null) {
-                rowOwners.setVisibility(View.GONE);
-                rowAdministrators.setVisibility(View.GONE);
-                rowGuardians.setVisibility(View.GONE);
-                rowPoi.setVisibility(View.GONE);
-            } else {
-                rowNonNatural.setVisibility(View.GONE);
-            }
-        }
-
-        // Set claim number
-        if (!StringUtility.isEmpty(property.getPolygonNumber())) {
-            if (property.getServerId() != null && property.getServerId() > 0) {
-                txtClaimNumberInput.setText("#" + property.getPolygonNumber() + ", USIN: " + property.getServerId().toString());
-                txtClaimNumber.setText(property.getIpNumber());
-            } else {
-                txtClaimNumberInput.setText("#" + property.getPolygonNumber());
-                txtClaimNumber.setText(""+property.getIpNumber());
-            }
-        } else {
-            txtClaimNumberInput.setText("#" + featureId.toString());
-            txtClaimNumber.setText(""+property.getIpNumber());
         }
 
         // Set claim type
@@ -175,8 +133,6 @@ public class DataSummaryActivity extends ActionBarActivity {
 
         if (claimType != null)
             txtClaimType.setText(claimType.getName());
-
-        txtClaimDate.setText(StringUtility.empty(property.getSurveyDate()));
 
         customAttributesExist = db.getAttributesByType(Attribute.TYPE_CUSTOM).size() > 0;
 
@@ -228,8 +184,6 @@ public class DataSummaryActivity extends ActionBarActivity {
 
             if (property.getRight().getNonNaturalPerson() != null) {
                 tenureRaltion.setText(R.string.nonnatural);
-                nonNaturalCount.setText("1");
-                nonNaturalCount.setTextColor(getResources().getColor(R.color.green));
             } else {
                 tenureRaltion.setText("");
                 if (property.getRight().getShareTypeId() > 0) {
@@ -287,30 +241,6 @@ public class DataSummaryActivity extends ActionBarActivity {
             personCount.setText("" + property.getRight().getNaturalPersons().size());
             mediaCount.setText("" + Integer.toString(mediaSize));
             txtDisputingPersons.setText("" + Integer.toString(disputingPartiesSize));
-
-            if (property.getRight().getOwnersCount() == 0) {
-                ownerCountTxt.setTextColor(getResources().getColor(R.color.red));
-                ownerCountTxt.setText("0");
-            } else {
-                ownerCountTxt.setTextColor(getResources().getColor(R.color.green));
-                ownerCountTxt.setText("" + property.getRight().getOwnersCount());
-            }
-
-            if (property.getRight().getAdministratorCount() == 0) {
-                adminCountTxt.setTextColor(getResources().getColor(R.color.red));
-                adminCountTxt.setText("0");
-            } else {
-                adminCountTxt.setTextColor(getResources().getColor(R.color.green));
-                adminCountTxt.setText("" + property.getRight().getAdministratorCount());
-            }
-
-            if (property.getRight().getGuardianCount() == 0) {
-                guardianCountTxt.setTextColor(getResources().getColor(R.color.red));
-                guardianCountTxt.setText("0");
-            } else {
-                guardianCountTxt.setTextColor(getResources().getColor(R.color.green));
-                guardianCountTxt.setText("" + property.getRight().getGuardianCount());
-            }
 
             if (property.getPersonOfInterests().size() == 0) {
                 countPOITxt.setTextColor(getResources().getColor(R.color.red));

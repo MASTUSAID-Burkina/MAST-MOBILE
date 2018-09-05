@@ -39,6 +39,7 @@ import com.rmsi.android.mast.util.StringUtility;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class AddPersonActivity extends ActionBarActivity {
@@ -55,15 +56,9 @@ public class AddPersonActivity extends ActionBarActivity {
     private Person person = null;
     private ShareType shareType;
     private boolean readOnly = false;
-
-    private static boolean keyboardHidden = true;
-    private static int reduceHeight = 0;
-
     private int acquisionID;
     private KeyboardUtil keyboardUtil;
     private int isDispute=0;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +82,6 @@ public class AddPersonActivity extends ActionBarActivity {
             disputeId = extras.getLong("disputeId");
             acquisionID=extras.getInt("acquisionID");
             isDispute=extras.getInt("IsDisputed");
-
         }
 
         setContentView(R.layout.activity_add_person);
@@ -101,18 +95,11 @@ public class AddPersonActivity extends ActionBarActivity {
         final Spinner spinnerAcquisition = (Spinner) findViewById(R.id.spinnerAcquisition);
         final EditText txtShareSize = (EditText) findViewById(R.id.txtShareSize);
 
-
         final GridView gridView = (GridView) findViewById(R.id.gridView_image);
         adapter = new myImageAdapter(context);
         gridView.setAdapter(adapter);
 
-
         keyboardUtil=new KeyboardUtil(AddPersonActivity.this,gridView);
-
-
-
-
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.AddPerson);
@@ -133,14 +120,7 @@ public class AddPersonActivity extends ActionBarActivity {
         shareType = db.getShareTypeByRight(rightId);
 
         if (personId != null && personId > 0) {
-
-            int shareTypeId=db.getShareIdByFeatureID(featureId);
-            if (shareTypeId==6){
-                person = db.getPersonBySingleTenancy(personId);
-            }else {
-                person = db.getPerson(personId,featureId);
-            }
-
+            person = db.getPerson(personId,featureId);
         }
 
         if (person == null) {
@@ -151,7 +131,6 @@ public class AddPersonActivity extends ActionBarActivity {
             person.setSubTypeId(subTypeId);
             person.setDisputeId(disputeId);
             person.setAcquisitionTypeId(acquisionID);
-
             spinnerResident.setSelection(0);
         } else {
             // Set values
@@ -184,81 +163,56 @@ public class AddPersonActivity extends ActionBarActivity {
             });
         }
 
-        if(shareType != null && shareType.getCode() == ShareType.TYPE_MUTIPLE_OCCUPANCY_IN_COMMON){
-            GuiUtility.bindActionOnFieldChange(txtShareSize, new Runnable() {
-                @Override
-                public void run() {
-                    person.setShare(StringUtility.empty(txtShareSize.getText().toString()));
-                }
-            });
-        } else {
-            shareSizeLayout.setVisibility(View.GONE);
-        }
+        shareSizeLayout.setVisibility(View.GONE);
+        List<Attribute> attributes = db.getAttributesByType(Attribute.TYPE_NATURAL_PERSON);
 
         // Populate attributes
-        int shareTypeId=db.getShareIdByFeatureID(featureId);
-
-        if (shareTypeId==6) {
-            if (person.getAttributes() == null || person.getAttributes().size() < 1) {
-                // Pull attributes for natural person & hide the owner Type
-                person.setAttributes(db.getAttributesByTypeHideOwnerType(Attribute.TYPE_NATURAL_PERSON));
-            }
-        }else {
-            if (person.getAttributes() == null || person.getAttributes().size() < 1) {
-                // Pull attributes for natural person
-                person.setAttributes(db.getAttributesByTypeOtherCases(Attribute.TYPE_NATURAL_PERSON,featureId));
-            }
+        if (person.getAttributes() == null || person.getAttributes().size() < 1) {
+            // Pull attributes for natural person
+            person.setAttributes(attributes);
         }
-//        if (person.getAttributes() == null || person.getAttributes().size() < 1) {
-//            // Pull attributes for natural person
-//            person.setAttributes(db.getAttributesByType(Attribute.TYPE_NATURAL_PERSON));
-//        }
 
         if (person.getAttributes() != null) {
+            // Add/remove attributes, related to collective tenure
+            if(shareType.getCode() == ShareType.TYPE_INDIVIDUAL) {
+                // Remove attributes
+                Iterator<Attribute> iter = person.getAttributes().iterator();
+                while (iter.hasNext()){
+                    Attribute attr = iter.next();
+                    if (attr.getId().intValue() == Attribute.ATTR_MANDATE_DATE ||
+                            attr.getId().intValue() == Attribute.ATTR_MANDATE_TYPE){
+                        iter.remove();
+                    }
+                }
+            } else {
+                boolean hasMandateAttr = false;
+                for(Attribute attr : person.getAttributes()){
+                    if (attr.getId().intValue() == Attribute.ATTR_MANDATE_DATE ||
+                            attr.getId().intValue() == Attribute.ATTR_MANDATE_TYPE){
+                        hasMandateAttr = true;
+                    }
+                }
+                if(!hasMandateAttr){
+                    for(Attribute attr : attributes){
+                        if (attr.getId().intValue() == Attribute.ATTR_MANDATE_DATE ||
+                                attr.getId().intValue() == Attribute.ATTR_MANDATE_TYPE){
+                            person.getAttributes().add(attr);
+                        }
+                    }
+                }
+            }
+
             int isDipsuteValue=db.getDisputpersonTypefromFeature(featureId);
             if (isDipsuteValue==0) {
                 GuiUtility.appendLayoutWithAttributes(mainLayout, person.getAttributes(), readOnly);
-
             }
             else {
                 GuiUtility.appendLayoutWithAttributesByDisputed(mainLayout, person.getAttributes(), readOnly);
-
             }
-//            else if (isDipsuteValue==1){
-//                GuiUtility.appendLayoutWithAttributesByDisputed(mainLayout, person.getAttributes(), readOnly);
-//            }
 
             // Move photo to the end
             mainLayout.removeView(gridView);
             mainLayout.addView(gridView);
-
-
-
-            // Disable age attribute if dob exists. Set age value based on dob field
-            final Attribute dob = person.getAttribute(Person.ATTRIBUTE_DOB);
-            final Attribute age = person.getAttribute(Person.ATTRIBUTE_AGE);
-
-            if(dob != null && age != null){
-                age.getView().setEnabled(false);
-                GuiUtility.bindActionOnLabelChange((TextView)dob.getView(), new Runnable() {
-                    @Override
-                    public void run() {
-                        String date = ((TextView)dob.getView()).getText().toString();
-                        if(StringUtility.isEmpty(date)){
-                            ((EditText)age.getView()).setText("");
-                        } else {
-                            ((EditText)age.getView()).setText(
-                                    Integer.toString(
-                                            DateUtility.getDiffYears(
-                                                    DateUtility.getDate(date),
-                                                    DateUtility.getCurrentDate()
-                                            )
-                                    )
-                            );
-                        }
-                    }
-                });
-            }
         }
 
         GuiUtility.bindActionOnSpinnerChange(spinnerResident, new Runnable() {
@@ -308,36 +262,12 @@ public class AddPersonActivity extends ActionBarActivity {
             shareCode = shareType.getCode();
         }
 
-//        if (isDispute==0){
-//            if (!person.validateByPerson(context, shareCode, disputeId > 0, true,isDispute)) {
-//                return;
-//            }
-//        }
-//        else if (isDispute==1){
-//            if (!person.validate(context, shareCode, disputeId > 0, true)) {
-//                return;
-//            }
-//        }
         if (!person.validate(context, shareCode, disputeId > 0, true)) {
             return;
         }
 
         try {
-
-            int shareTypeId= DbController.getInstance(context).getShareIdByFeatureID(featureId);
-
-            if (shareTypeId==6){
-//                List<Attribute> attributeList=new ArrayList<>();
-                Attribute attribute=new Attribute();
-                attribute.setId(1156L);
-                attribute.setName("Owner Type");
-                attribute.setFeatureId(featureId);
-                attribute.setValue("1186");
-                person.getAttributes().add(attribute);
-            }
-
             boolean saveResult = DbController.getInstance(context).savePerson(person);
-
             if (saveResult) {
                 finish();
             } else {

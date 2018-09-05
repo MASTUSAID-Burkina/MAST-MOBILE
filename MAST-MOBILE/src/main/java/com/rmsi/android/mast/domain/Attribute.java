@@ -15,8 +15,8 @@ public class Attribute implements Serializable {
     transient private int controlType;
     transient private String name;
     transient private View view;
-     private String value;
-//    transient private Long groupId;
+    private String value;
+    private String value2;
     private Long groupId;
     transient private int listing;
     transient private List<Option> OptionsList = new ArrayList<>();
@@ -24,26 +24,11 @@ public class Attribute implements Serializable {
     transient private String validate;
     transient private Drawable initialBackground;
 
-
-//    private Long id;
-//    transient private String type;
-//    transient private int controlType;
-//    transient private String name;
-//    transient private View view;
-//    private String value;
-//    transient private Long groupId;
-//    transient private int listing;
-//    transient private List<Option> OptionsList = new ArrayList<>();
-//    transient private Long featureId;
-//    transient private String validate;
-//    transient private Drawable initialBackground;
-
     public static String TABLE_NAME = "ATTRIBUTE_MASTER";
     public static String TABLE_ATTRIBUTE_VALUE_NAME = "FORM_VALUES";
 
     public static String COL_ID = "ATTRIB_ID";
     public static String COL_TYPE = "ATTRIBUTE_TYPE";
-    //ATTRIBUTE_TYPE_NAME
     public static String COL_TYPE_NAME = "ATTRIBUTE_TYPE_NAME";
     public static String COL_FLAG = "FLAG";
     public static String COL_CONTROL_TYPE = "ATTRIBUTE_CONTROLTYPE";
@@ -63,6 +48,7 @@ public class Attribute implements Serializable {
     public static int CONTROL_TYPE_BOOLEAN = 3;
     public static int CONTROL_TYPE_NUMBER = 4;
     public static int CONTROL_TYPE_SPINNER = 5;
+    public static int CONTROL_TYPE_MULTISELECT = 6;
 
     public static String TYPE_GENERAL = "1";
     public static String TYPE_NATURAL_PERSON = "2";
@@ -72,6 +58,11 @@ public class Attribute implements Serializable {
     public static String TYPE_CUSTOM = "6";
     public static String TYPE_GENERAL_PROPERTY = "7";
     public static String TYPE_TENURE_INFOMRATION = "Resource";
+
+    public static int ATTR_MANDATE_TYPE = 269;
+    public static int ATTR_MANDATE_DATE = 294;
+    public static int ATTR_EXISTING_USE = 16;
+
     private String resID;
     private String labelName;
 
@@ -84,7 +75,6 @@ public class Attribute implements Serializable {
     }
 
 
-
     public String getResID() {
         return resID;
     }
@@ -92,7 +82,6 @@ public class Attribute implements Serializable {
     public void setResID(String resID) {
         this.resID = resID;
     }
-
 
 
     public Long getId() {
@@ -156,6 +145,14 @@ public class Attribute implements Serializable {
         this.value = value;
     }
 
+    public String getValue2() {
+        return value2;
+    }
+
+    public void setValue2(String value2) {
+        this.value2 = value2;
+    }
+
     public Long getGroupId() {
         return groupId;
     }
@@ -188,12 +185,14 @@ public class Attribute implements Serializable {
         this.featureId = featureId;
     }
 
-    /** Checks list of attributes for required fields. */
-    public static boolean hasRequiredFields(List<Attribute> attributes){
-        if(attributes == null || attributes.size() < 1)
+    /**
+     * Checks list of attributes for required fields.
+     */
+    public static boolean hasRequiredFields(List<Attribute> attributes) {
+        if (attributes == null || attributes.size() < 1)
             return false;
-        for(Attribute attribute : attributes){
-            if(StringUtility.empty(attribute.getValidate()).equalsIgnoreCase("true"))
+        for (Attribute attribute : attributes) {
+            if (StringUtility.empty(attribute.getValidate()).equalsIgnoreCase("true"))
                 return true;
         }
         return false;

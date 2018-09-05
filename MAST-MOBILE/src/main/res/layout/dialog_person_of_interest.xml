@@ -10,25 +10,36 @@
         android:layout_height="1dp"
         android:background="#CCCCCC" />
 
+    <TextView
+        android:id="@+id/lblFirstName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:text="@string/firstName"
+        android:textColor="@color/color_primary_dark"
+        android:textSize="@dimen/textSize" />
+
     <EditText
         android:id="@+id/editTextFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
         android:textColor="@color/black"
-        android:hint="@string/firstName"
         android:inputType="textCapSentences" >
         <requestFocus />
     </EditText>
 
-    <EditText
-        android:id="@+id/editTextMiddleName"
+
+    <TextView
+        android:id="@+id/lblLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:textColor="@color/black"
-        android:hint="@string/middleName"
-        android:inputType="textCapSentences" />
+        android:layout_marginTop="5dp"
+        android:padding="5dp"
+        android:text="@string/lastName"
+        android:textColor="@color/color_primary_dark"
+        android:textSize="@dimen/textSize" />
 
     <EditText
         android:id="@+id/editTextLastName"
@@ -36,7 +47,6 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:textColor="@color/black"
-        android:hint="@string/lastName"
         android:inputType="textCapSentences" />
 
     <LinearLayout
@@ -66,28 +76,6 @@
 
         <View
             android:id="@+id/lineDob"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="#CCCCCC" />
-
-        <TextView
-            android:id="@+id/lblRelationshipType"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:padding="5dp"
-            android:text="@string/RelationshipType"
-            android:textColor="@color/color_primary_dark"
-            android:textSize="@dimen/textSize" />
-
-        <Spinner
-            android:id="@+id/spinnerRelationshipType"
-            style="@style/Widget.AppCompat.Spinner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:theme="@style/AppTheme" />
-
-        <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="#CCCCCC" />

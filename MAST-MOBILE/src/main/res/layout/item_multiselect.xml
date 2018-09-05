@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"    
+    android:padding="10dp">
+
+    <ListView
+        android:id="@+id/listviewAnswer"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_weight="8"
+        android:choiceMode="multipleChoice"
+        android:divider="@color/white"
+        android:textColor="@color/black"
+        android:textSize="@dimen/textSize"
+        android:theme="@style/AppTheme">
+
+    </ListView>
+
+    <Button
+        android:id="@+id/btn_SubmitAnswer"
+        android:layout_width="104dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="10dp"
+        android:layout_weight="0.2"
+        android:gravity="center"
+        android:text="@string/submit_answer"
+        android:background="@color/color_primary"
+        android:textColor="@color/white" />
+ 
+</LinearLayout>

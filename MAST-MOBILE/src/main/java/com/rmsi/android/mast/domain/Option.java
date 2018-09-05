@@ -2,6 +2,7 @@ package com.rmsi.android.mast.domain;
 
 import android.view.View;
 
+import com.rmsi.android.mast.util.CommonFunctions;
 import com.rmsi.android.mast.util.StringUtility;
 
 import java.io.Serializable;
@@ -13,9 +14,6 @@ public class Option  implements Serializable
 	private String name;
 	private String nameOtherLang;
 	transient private View view;
-
-
-
 	private Long optionID;
 
 	public static String TABLE_NAME = "OPTIONS";
@@ -23,6 +21,8 @@ public class Option  implements Serializable
 	public static String COL_ATTRIBUTE_ID = "ATTRIB_ID";
 	public static String COL_NAME = "OPTION_NAME";
 	public static String COL_NAME_OTHER_LANG = "OPTION_NAME_OTHER";
+
+	public static String ID_OTHER_USE = "58";
 
 	public Long getId() {
 		return id;
@@ -69,6 +69,9 @@ public class Option  implements Serializable
 
     @Override
 	public String toString(){
-		return StringUtility.empty(getName());
+		if(CommonFunctions.getInstance().getLocale().equalsIgnoreCase("en")){
+			return StringUtility.empty(getName());
+		}
+		return StringUtility.empty(getNameOtherLang());
 	}
 }

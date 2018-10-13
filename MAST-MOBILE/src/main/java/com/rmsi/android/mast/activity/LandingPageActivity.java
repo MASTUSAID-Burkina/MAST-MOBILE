@@ -70,7 +70,7 @@ public class LandingPageActivity extends ActionBarActivity implements Receiver {
 //        toolbar.setTitle("Dashboard");
         TextView textViewTitle= (TextView) findViewById(R.id.title);
         textViewTitle.setVisibility(View.VISIBLE);
-        textViewTitle.setText("Dashboard");
+        textViewTitle.setText(getResources().getString(string.main_menu));
 
         if (toolbar != null)
             setSupportActionBar(toolbar);

@@ -19,6 +19,8 @@
     <string name="configure_data">Configure Data Collection Tools</string>
     <string name="auto_sync">Configure Auto Sync</string>
     <string name="capture_data">Select Capture Data</string>
+    <string name="menu_capture_data">Capture Parcel</string>
+    <string name="menu_capture_data_res">Capture Resource</string>
     <string name="server_address"><u>Server Address</u></string>
     <string name="hide"><u>Hide</u></string>
     <string name="url">URL</string>
@@ -27,6 +29,7 @@
     <string name="snapTolerance">Snapping tolerance</string>
     <string name="enableLabeling">Enable labeling</string>
     <string name="enableVertexDrawing">Enable vertex drawing</string>
+    <string name="main_menu">Main Menu</string>
 
     <string-array name="UserPref_arrays">
         <item>Change Language</item>
@@ -290,7 +293,7 @@
     <string name="add_custom_attributes">Add Custom Attributes</string>
     <string name="verifiedFeatureMsg">Are you sure to mark this feature as Verified ?</string>
     <string name="equal_person_nd_tenure">Please add equal number of person and tenure</string>
-    <string name="atleast_one_person">Please add atleast one person</string>
+    <string name="atleast_one_person">Please add at least one person</string>
     <string name="fill_property_Details">Please add property details</string>
     <string name="Error_updating_feature">Error in updating feature..!!</string>
     <string name="Error_deleting_feature">Error in deleting feature..!!</string>

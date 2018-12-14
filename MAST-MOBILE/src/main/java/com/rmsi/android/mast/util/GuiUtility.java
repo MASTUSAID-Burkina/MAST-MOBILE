@@ -105,7 +105,7 @@ public class GuiUtility {
 
     private static View createInputRow(View container, final Attribute attribute, boolean readOnly) {
         TextView field = (TextView) container.findViewById(R.id.field);
-        field.setText(attribute.getName());
+        field.setText(attribute.getLabelName());
         final EditText fieldValue = (EditText) container.findViewById(R.id.fieldValue);
         fieldValue.setTag(attribute.getId());
 
@@ -134,7 +134,7 @@ public class GuiUtility {
 
     private static View createTimePickerRow(View container, final Attribute attribute, boolean readOnly) {
         TextView field = (TextView) container.findViewById(R.id.field);
-        field.setText(attribute.getName());
+        field.setText(attribute.getLabelName());
 
         final TextView textDatePicker = (TextView) container.findViewById(R.id.textview_datepicker);
         textDatePicker.setTag(attribute.getId());
@@ -413,8 +413,8 @@ public class GuiUtility {
 
             } else {
 
-                fieldAlias.setText(attribute.getName());
-                spinner.setPrompt(attribute.getName());
+                fieldAlias.setText(attribute.getLabelName());
+                spinner.setPrompt(attribute.getLabelName());
                 spinner.setTag(attribute.getId());
 
                 SpinnerAdapter spinnerAdapter = new SpinnerAdapter(
@@ -451,8 +451,8 @@ public class GuiUtility {
         else if (isDipute == 1) {
 
 
-            fieldAlias.setText(attribute.getName());
-            spinner.setPrompt(attribute.getName());
+            fieldAlias.setText(attribute.getLabelName());
+            spinner.setPrompt(attribute.getLabelName());
             spinner.setTag(attribute.getId());
 
             SpinnerAdapter spinnerAdapter = new SpinnerAdapter(
@@ -491,8 +491,8 @@ public class GuiUtility {
         TextView fieldAlias = (TextView) container.findViewById(R.id.field);
 
         final Spinner spinner = (Spinner) container.findViewById(R.id.spinner1);
-        fieldAlias.setText(attribute.getName());
-        spinner.setPrompt(attribute.getName());
+        fieldAlias.setText(attribute.getLabelName());
+        spinner.setPrompt(attribute.getLabelName());
 
         if (readOnly) {
             spinner.setEnabled(false);

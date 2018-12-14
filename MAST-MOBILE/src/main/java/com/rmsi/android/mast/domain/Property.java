@@ -12,6 +12,7 @@ import com.rmsi.android.mast.util.StringUtility;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Property extends Feature implements Serializable {
@@ -37,6 +38,11 @@ public class Property extends Feature implements Serializable {
     public static String COL_IS_NATURAL = "IS_NATURAL";
     public static String COL_VILLAGE_ID = "VILLAGE_ID";
     public static String COL_OTHER_USE = "OTHER_USE";
+    public static String COL_CHARTERED = "CHARTERED";
+    public static String COL_COMMENT = "COMMENT";
+    public static String COL_VALIDATED_BY_COUNCIL = "VALIDATED_BY_COUNCIL";
+    public static String COL_VALIDATION_DATE = "VALIDATION_DATE";
+    public static String COL_IN_EXPLOITATION = "IN_EXPLOITATION";
 
     private String creationDate;
     private String completionDate;
@@ -94,6 +100,11 @@ public class Property extends Feature implements Serializable {
     private int isNatural;
     private Integer villageId;
     private String otherUse;
+    private boolean chartered;
+    private String comment;
+    private boolean validatedByCouncil;
+    private String validationDate;
+    private boolean inExploitation;
 
     public String getOtherUse() {
         return otherUse;
@@ -407,6 +418,46 @@ public class Property extends Feature implements Serializable {
 
     public void setUkaNumber(String ukaNumber) {
         this.ukaNumber = ukaNumber;
+    }
+
+    public boolean isChartered() {
+        return chartered;
+    }
+
+    public void setChartered(boolean chartered) {
+        this.chartered = chartered;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public boolean isValidatedByCouncil() {
+        return validatedByCouncil;
+    }
+
+    public void setValidatedByCouncil(boolean validatedByCouncil) {
+        this.validatedByCouncil = validatedByCouncil;
+    }
+
+    public String getValidationDate() {
+        return validationDate;
+    }
+
+    public void setValidationDate(String validationDate) {
+        this.validationDate = validationDate;
+    }
+
+    public boolean isInExploitation() {
+        return inExploitation;
+    }
+
+    public void setInExploitation(boolean inExploitation) {
+        this.inExploitation = inExploitation;
     }
 
     public DeceasedPerson getDeceasedPerson() {

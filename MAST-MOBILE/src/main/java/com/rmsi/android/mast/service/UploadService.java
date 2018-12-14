@@ -292,65 +292,7 @@ public class UploadService extends IntentService {
                 nodata = true;
 
         }
-
-        //if(isParUpload==true && isResUpload==true)
             return isUploadedStatus;
-        //else
-          //  return false;
-
-//        String syncData = db.getProjectDataForUpload();
-
-//        if (!TextUtils.isEmpty(syncData)) {
-//            try {
-//                StringBuilder postData = new StringBuilder();
-//                postData.append(URLEncoder.encode("projectName", "UTF-8") + "=" + URLEncoder.encode(db.getProjectname(), "UTF-8"));
-//                postData.append("&");
-//                //db.getLoggedUser().getUserId().toString()
-//                postData.append(URLEncoder.encode("userId", "UTF-8") + "=" + URLEncoder.encode(db.getLoggedUser().getUserId().toString(), "UTF-8"));
-//                postData.append("&");
-//                postData.append(URLEncoder.encode("data", "UTF-8") + "=" + URLEncoder.encode(syncData, "UTF-8"));
-//
-//                HttpURLConnection conn = (HttpURLConnection) new URL(requestUrl).openConnection();
-//                conn.setReadTimeout(1000000);
-//                conn.setConnectTimeout(1000000);
-//                conn.setRequestMethod("POST");
-//                conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-//                conn.setRequestProperty("charset", "utf-8");
-//                conn.setDoInput(true);
-//                conn.setDoOutput(true);
-//                conn.setUseCaches(false);
-//
-//                DataOutputStream wr = new DataOutputStream(conn.getOutputStream());
-//                wr.write(postData.toString().getBytes("UTF-8"));
-//                wr.flush();
-//                wr.close();
-//
-//                int status = conn.getResponseCode();
-//
-//                if (conn.getResponseCode() > 1) {
-//                    is = conn.getInputStream();
-//                    // Convert the InputStream into a string
-//                    String response = CommonFunctions.getStringFromInputStream(is);
-//
-//                    if (!TextUtils.isEmpty(response) && !response.contains("Exception")) {
-//                        return db.updateServerFeatureId(response);
-//                    } else {
-//                        cf.addErrorMessage("UploadService", response);
-//                        return false;
-//                    }
-//                }
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//                cf.syncLog("", e);
-//                return false;
-//            } finally {
-//                if (is != null) {
-//                    is.close();
-//                }
-//            }
-//        } else
-//            nodata = true;
-        //return true;
     }
 
 

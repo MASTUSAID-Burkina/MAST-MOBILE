@@ -140,7 +140,7 @@ public class Owner extends ActionBarActivity {
         listView.setEmptyView(emptyText);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Owner " + "" + iCountOwner);
+        toolbar.setTitle(context.getResources().getString(R.string.owner) + "" + iCountOwner);
 
 
         if (toolbar != null)

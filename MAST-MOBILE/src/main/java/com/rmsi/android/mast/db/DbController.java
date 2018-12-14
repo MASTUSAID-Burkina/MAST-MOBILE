@@ -135,7 +135,12 @@ public class DbController extends SQLiteOpenHelper {
                 "DOCUMENT_REF_NO TEXT," +
                 "IS_NATURAL INTEGER," +
                 "VILLAGE_ID INTEGER," +
-                "OTHER_USE TEXT" +
+                "OTHER_USE TEXT," +
+                "CHARTERED BOOLEAN DEFAULT false," +
+                "COMMENT TEXT," +
+                "VALIDATED_BY_COUNCIL BOOLEAN DEFAULT false," +
+                "VALIDATION_DATE TEXT," +
+                "IN_EXPLOITATION BOOLEAN DEFAULT false" +
                 ")";
 
         String query_table10 = "CREATE TABLE SOCIAL_TENURE(" +
@@ -755,10 +760,13 @@ public class DbController extends SQLiteOpenHelper {
                 int IS_NATURAL = cur.getColumnIndex(Property.COL_IS_NATURAL);
                 int indxVillageId = cur.getColumnIndex(Property.COL_VILLAGE_ID);
                 int indxOtherUse = cur.getColumnIndex(Property.COL_OTHER_USE);
+                int indxChartered = cur.getColumnIndex(Property.COL_CHARTERED);
+                int indxComment = cur.getColumnIndex(Property.COL_COMMENT);
+                int indxValidatedByCouncil = cur.getColumnIndex(Property.COL_VALIDATED_BY_COUNCIL);
+                int indxValidationDate = cur.getColumnIndex(Property.COL_VALIDATION_DATE);
+                int indxInExploitation = cur.getColumnIndex(Property.COL_IN_EXPLOITATION);
 
                 do {
-
-
                     Property property = new Property();
                     property.setId(cur.getLong(indxId));
                     if (!cur.isNull(indxServerId))
@@ -782,7 +790,11 @@ public class DbController extends SQLiteOpenHelper {
                     property.setIpNumber(cur.getInt(ipNUMBER));
                     property.setVillageId(cur.getInt(indxVillageId));
                     property.setOtherUse(cur.getString(indxOtherUse));
-
+                    property.setChartered(cur.getInt(indxChartered) > 0);
+                    property.setComment(cur.getString(indxComment));
+                    property.setInExploitation(cur.getInt(indxInExploitation) > 0);
+                    property.setValidatedByCouncil(cur.getInt(indxValidatedByCouncil) > 0);
+                    property.setValidationDate(cur.getString(indxValidationDate));
                     property.setClaimRight(cur.getString(claimRight));
                     property.setPlotNo(cur.getString(plotNo));
                     property.setDocument(cur.getString(document));
@@ -2679,14 +2691,13 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
-                    } else {
-                        attribute.setName(cur.getString(indxName));
-                    }
+                    attribute.setName(cur.getString(indxName));
 
-                    attribute.setLabelName(attribute.getName());
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
+                    } else {
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
+                    }
 
                     if (attribute.getControlType() == 5 || attribute.getControlType() == 6) { // Spinner
                         List<Option> optionList = new ArrayList<Option>();
@@ -2720,7 +2731,6 @@ public class DbController extends SQLiteOpenHelper {
                         }
                         cur2.close();
                         attribute.setOptionsList(optionList);
-
                     }
 
                     attributes.add(attribute);
@@ -4803,8 +4813,8 @@ public class DbController extends SQLiteOpenHelper {
                         if (attribute_detail.has("mandatory") && !TextUtils.isEmpty(attribute_detail.getString("mandatory")) && !attribute_detail.getString("mandatory").equalsIgnoreCase("null")) {
                             attributeValues.put("VALIDATION", attribute_detail.getString("mandatory"));
                         }
-                        if (attribute_detail.has("fieldname") && !TextUtils.isEmpty(attribute_detail.getString("fieldname")) && !attribute_detail.getString("fieldname").equalsIgnoreCase("null")) {
-                            attributeValues.put("ATTRIBUTE_NAME_OTHER", attribute_detail.getString("fieldname"));
+                        if (attribute_detail.has("fieldaliasname") && !TextUtils.isEmpty(attribute_detail.getString("fieldaliasname")) && !attribute_detail.getString("fieldaliasname").equalsIgnoreCase("null")) {
+                            attributeValues.put("ATTRIBUTE_NAME_OTHER", attribute_detail.getString("fieldaliasname"));
                         }
                         getDb().insert("ATTRIBUTE_MASTER", null, attributeValues);
                         attributeValues.clear();
@@ -5196,16 +5206,12 @@ public class DbController extends SQLiteOpenHelper {
                         Property.COL_SERVER_ID + " IS NULL OR " + Property.COL_SERVER_ID + " = '')" + " AND (" +
                         " FLAG " + " = '" + ParamType + "')");
             }
-//            List<Property> properties = createPropertyList("SELECT * FROM " + Property.TABLE_NAME +
-//                    " WHERE " + Property.COL_STATUS + " = '" + Property.CLIENT_STATUS_COMPLETE + "' AND (" +
-//                    Property.COL_SERVER_ID + " IS NULL OR " + Property.COL_SERVER_ID + " = '')");
 
             if (properties == null || properties.size() < 1)
                 return "";
 
             Gson gson = new Gson();
-            Type type = new TypeToken<List<Property>>() {
-            }.getType();
+            Type type = new TypeToken<List<Property>>() {}.getType();
             return gson.toJson(properties, type);
         } catch (Exception e) {
             cf.syncLog("", e);
@@ -6649,14 +6655,8 @@ public class DbController extends SQLiteOpenHelper {
 
     public boolean insertResourceAtrrValue(ClassificationAttribute classification, Long featureId) {
         try {
-
-//            String whereGroupId = "FEATURE_ID" + "=" + featureId;
-//            getDb().delete("RESOURCE_BASISC_ATTRIBUTES", whereGroupId, null);
-
-
             if (classification.getAttribValue().equalsIgnoreCase(contxt.getResources().getString(R.string.SelectOption))) {
             } else {
-
                 ContentValues values = new ContentValues();
                 values.put("FEATURE_ID", featureId);
                 values.put("VALUE", classification.getAttribValue());
@@ -6664,14 +6664,12 @@ public class DbController extends SQLiteOpenHelper {
                 getDb().insert("RESOURCE_BASISC_ATTRIBUTES", null, values);
             }
 
-
             return true;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
-
 
     public List<Option> getMaritalStatus(int a, boolean addDummy) {
 
@@ -7244,12 +7242,17 @@ public class DbController extends SQLiteOpenHelper {
     }
 
 
-    public boolean updatePropertyBasic(Property prop) {
+    public boolean updateResourceBasic(Property prop) {
         try {
             ContentValues values = new ContentValues();
             values.put(Property.COL_CLASSIFICATION_ID, prop.getClassificationId());
             values.put(Property.COL_SUBCLASSIFICATION_ID, prop.getSubClassificationId());
             values.put(Property.COL_TENURE_ID, prop.getTenureTypeID());
+            values.put(Property.COL_CHARTERED, prop.isChartered());
+            values.put(Property.COL_COMMENT, prop.getComment());
+            values.put(Property.COL_VALIDATION_DATE, prop.getValidationDate());
+            values.put(Property.COL_VALIDATED_BY_COUNCIL, prop.isValidatedByCouncil());
+            values.put(Property.COL_IN_EXPLOITATION, prop.isInExploitation());
             getDb().update(Feature.TABLE_NAME, values, Property.COL_ID + " = " + prop.getId(), null);
             return true;
         } catch (Exception e) {
@@ -7818,9 +7821,6 @@ public class DbController extends SQLiteOpenHelper {
 
     public List<ResourceOwner> getResorceMultipleOwnerName(long featureid) {
         String ownerName = null;
-        String FName = null;
-        String MName = null;
-        String LName = null;
         List<ResourceOwner> lstOwnerName = new ArrayList<ResourceOwner>();
 
         int iGID = 0;
@@ -7843,8 +7843,24 @@ public class DbController extends SQLiteOpenHelper {
                         try {
                             do {
                                 ResourceOwner objRresourceOwner = new ResourceOwner();
-
-                                ownerName = cursor.getString(0) + " " + cursor.getString(1) + " " + cursor.getString(2);
+                                ownerName = "";
+                                if(cursor.getString(0) != null && !cursor.getString(0).equals("") && !cursor.getString(0).equals("null")){
+                                    ownerName = cursor.getString(0);
+                                }
+                                if(cursor.getString(1) != null && !cursor.getString(1).equals("") && !cursor.getString(1).equals("null")){
+                                    if(ownerName.equals("")) {
+                                        ownerName = cursor.getString(1);
+                                    } else {
+                                        ownerName += " " + cursor.getString(1);
+                                    }
+                                }
+                                if(cursor.getString(2) != null && !cursor.getString(2).equals("") && !cursor.getString(2).equals("null")){
+                                    if(ownerName.equals("")) {
+                                        ownerName = cursor.getString(2);
+                                    } else {
+                                        ownerName += " " + cursor.getString(2);
+                                    }
+                                }
                                 objRresourceOwner.setOwnerName(ownerName);
                                 objRresourceOwner.setFeatureID(featureid);
                                 objRresourceOwner.setGroupId(iGID);

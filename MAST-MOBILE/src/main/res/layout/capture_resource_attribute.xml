@@ -20,7 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:padding="5dp"
-            android:text="Select Type"
+            android:text="@string/type"
             android:textColor="@color/color_primary_dark"
             android:textSize="@dimen/textSize" />
 
@@ -41,7 +41,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:padding="5dp"
-            android:text="Select Subtype"
+            android:text="@string/subType"
             android:textColor="@color/color_primary_dark"
             android:textSize="@dimen/textSize" />
 
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
             android:padding="5dp"
-            android:text="Resource Tenure Type"
+            android:text="@string/tenureType"
             android:textColor="@color/color_primary_dark"
             android:textSize="@dimen/textSize" />
 
@@ -77,8 +77,90 @@
             android:layout_height="1dp"
             android:background="#CCCCCC" />
 
+        <CheckBox
+            android:id="@+id/chartered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/color_primary_dark"
+            android:text="@string/chartered" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#CCCCCC" />
 
+        <LinearLayout
+            android:id="@+id/charetedFields"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/validatedByCouncil"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_primary_dark"
+                android:text="@string/validated_by_council" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC" />
 
+            <TextView
+                android:id="@+id/lblValidationDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:text="@string/validation_date"
+                android:textColor="@color/color_primary_dark"
+                android:textSize="@dimen/textSize" />
+
+            <TextView
+                android:id="@+id/txtValidationDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:padding="5dp"
+                android:textColor="@color/black"
+                android:textSize="@dimen/textSize" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC" />
+
+            <CheckBox
+                android:id="@+id/inExploitation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_primary_dark"
+                android:text="@string/in_exploitation" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#CCCCCC" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/lblComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:padding="5dp"
+            android:text="@string/comment"
+            android:textColor="@color/color_primary_dark"
+            android:textSize="@dimen/textSize" />
+
+        <EditText
+            android:id="@+id/txtComment"
+            android:layout_weight="10"
+            android:gravity="top"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textMultiLine" />
 
 
     </LinearLayout>

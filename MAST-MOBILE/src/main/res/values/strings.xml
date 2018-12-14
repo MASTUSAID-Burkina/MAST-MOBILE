@@ -156,7 +156,7 @@
     <string name="AddNewPerson">Add New Person</string>
     <string name="AddNewProperty">Add Property Info</string>
     <string name="AddSocialTenureInfo">Add Social Tenure</string>
-    <string name="SocialTenureInfo">Social Tenure Information</string>
+    <string name="SocialTenureInfo">Tenure Information</string>
     <string name="Latitude">Latitude</string>
     <string name="longitude">Longitude</string>
     <string name="clear_feature">Clear</string>
@@ -186,20 +186,20 @@
     <string name="show_bookmarks">View Bookmarks</string>
     <string name="bookmarkDialogTitle">Select Bookmark</string>
     <string name="clearFeatureDrawnMsg">Do you want to clear this feature ?</string>
-    <string name="unableSaveFeatureMsg">Unable to save Feature..!!</string>
-    <string name="updateFeatureMsg">Feature Updated Successfully..!!</string>
-    <string name="unableUpdatefeatureMsg">Unable to update feature..!!</string>
-    <string name="errorOccured">An error occurred..!!</string>
-    <string name="successFeatureSave">Feature Saved Successfully..!!</string>
-    <string name="noFeaturesToLoad">No features to load from db..!!</string>
+    <string name="unableSaveFeatureMsg">Unable to save Feature!</string>
+    <string name="updateFeatureMsg">Feature Updated Successfully!</string>
+    <string name="unableUpdatefeatureMsg">Unable to update feature!</string>
+    <string name="errorOccured">An error occurred!</string>
+    <string name="successFeatureSave">Feature Saved Successfully!</string>
+    <string name="noFeaturesToLoad">No features to load from db!</string>
     <string name="featureEditTipMsg">Long Press on the Markers to activate edit mode and drag to change</string>
-    <string name="noLocationFound">No location found..!!</string>
+    <string name="noLocationFound">No location found!</string>
     <string name="correctValuesWarning">Please enter correct values</string>
     <string name="areaTxt">Area</string>
     <string name="lengthTxt">Length</string>
-    <string name="noFeatureFoundMsg">No feature found..!!</string>
-    <string name="errorDeleteFeatureMsg">Error deleting feature..!!</string>
-    <string name="unableToLoadOfflineData">Unable to load offline data..!!</string>
+    <string name="noFeatureFoundMsg">No feature found!</string>
+    <string name="errorDeleteFeatureMsg">Error deleting feature!</string>
+    <string name="unableToLoadOfflineData">Unable to load offline data!</string>
     <string name="colorDialogTitle">Choose Color</string>
     <string name="snappingSettingsTitle">Snapping settings</string>
     <string name="labelingSettingsTitle">Labeling and vertex settings</string>
@@ -233,9 +233,9 @@
     <string name="gps_fix_wait_msg">Waiting for GPS location</string>
     <string name="gps_fix_search_msg">Searching for location through GPS</string>
     <string name="gps_fix_success_msg">Location set by GPS</string>
-    <string name="bookmark_saved_msg">Bookmark saved..!!</string>
+    <string name="bookmark_saved_msg">Bookmark saved!</string>
     <string name="bookmark_save_error">Unable to save bookmark</string>
-    <string name="bookmark_enter_name">Please enter bookmark name..!!</string>
+    <string name="bookmark_enter_name">Please enter bookmark name!</string>
 
     <string-array name="personTypeArray">
         <item>Select an Option</item>
@@ -295,8 +295,8 @@
     <string name="equal_person_nd_tenure">Please add equal number of person and tenure</string>
     <string name="atleast_one_person">Please add at least one person</string>
     <string name="fill_property_Details">Please add property details</string>
-    <string name="Error_updating_feature">Error in updating feature..!!</string>
-    <string name="Error_deleting_feature">Error in deleting feature..!!</string>
+    <string name="Error_updating_feature">Error in updating feature!</string>
+    <string name="Error_deleting_feature">Error in deleting feature!</string>
     <string name="add_feature">Add feature</string>
     <string name="delete_feature">Delete feature</string>
     <string name="webserviceconnectMsg">Connecting to Web Service..</string>
@@ -360,7 +360,7 @@
     <string name="server_logging_msg">Logging from Server..</string>
     <string name="alert_delete_photo">Are you sure to delete person\'s photo ?</string>
     <string name="delete_photo">Delete Photo</string>
-    <string name="pic_delete_msg">Photo deleted..!!</string>
+    <string name="pic_delete_msg">Photo deleted!</string>
     <string name="no_pic_person">No photo captured for this person</string>
     <!-- Added 26th -->
     <string name="pic_added_successfully">Photo added successfully</string>
@@ -378,7 +378,7 @@
     <string name="MultimediaUploadedSuccessfully">Multimedia uploaded successfully</string>
     <string name="ErrorInUploadingFieldData">Error in uploading field data</string>
     <string name="ErrorInUploadingMultimedia">Error in uploading multimedia</string>
-    <string name="UnableToConnectToTheServer">Unable to connect to the server..!!</string>
+    <string name="UnableToConnectToTheServer">Unable to connect to the server!</string>
     <string name="ConnectionTimeout">Connection Timeout</string>
     <string name="ProjectDataDownloadedSuccessfully">Project data downloaded successfully</string>
     <string name="OfflineDataDownloadedSuccessfully">Offline data downloaded successfully</string>
@@ -596,6 +596,19 @@
     <string name="add_social_tenure">Add Social Tenure</string>
     <string name="add_poi">Add at least 1 person of interest</string>
     <string name="enter_poi_details">Enter first name, last name and select gender</string>
-
-
+    <string name="chartered">Chartered</string>
+    <string name="subType">Subtype</string>
+    <string name="type">Type</string>
+    <string name="comment">Comment</string>
+    <string name="validated_by_council">Validated by municipal council</string>
+    <string name="in_exploitation">In exploitation</string>
+    <string name="validation_date">Last Date of (re)validation</string>
+    <string name="infoInformalOrganization">You must add information for the point of contact for the organization/ association/ or group and can add one or more persons of interest</string>
+    <string name="infoCollective">You must add one or more occupants/owners and add one or more persons of interest</string>
+    <string name="infoPublic">Please enter information agency and point of contact information for agency/authority</string>
+    <string name="infoOpen">Please enter information about how this land resource is being held or used</string>
+    <string name="owner">Owner</string>
+    <string name="numOfPois">No of Added POIs</string>
+    <string name="captureResInfo">Capture Resource Information</string>
+    <string name="invalidGeometry">Invalid geometry! Please, correct before saving.</string>
 </resources>

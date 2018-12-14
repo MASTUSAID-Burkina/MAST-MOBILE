@@ -10,23 +10,6 @@
         android:id="@+id/toolbar"
         layout="@layout/layout_toolbar" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/appName"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center_horizontal|center"-->
-        <!--android:paddingBottom="30dp"-->
-        <!--android:paddingTop="30dp"-->
-        <!--android:text="@string/appname"-->
-        <!--android:textColor="@color/color_primary"-->
-        <!--android:textSize="@dimen/AppNameSize"-->
-        <!--android:textStyle="bold" />-->
-
-    <!--<View-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="1dp"-->
-        <!--android:background="#CCCCCC" />-->
-
     <ScrollView
         android:layout_width="fill_parent"
         android:layout_height="fill_parent">

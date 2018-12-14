@@ -34,10 +34,6 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.util.List;
 
-/**
- * Created by Ambar.Srivastava on 12/22/2017.
- */
-
 public class CollectedResourceDataSummary  extends ActionBarActivity {
     private final Context context = this;
     private DbController db = DbController.getInstance(context);
@@ -77,7 +73,7 @@ public class CollectedResourceDataSummary  extends ActionBarActivity {
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Collected Data Summary");
+        toolbar.setTitle(context.getResources().getString(R.string.title_activity_data_summary));
 
         if (toolbar != null)
             setSupportActionBar(toolbar);
@@ -130,7 +126,7 @@ public class CollectedResourceDataSummary  extends ActionBarActivity {
             listviewcustom.setVisibility(View.GONE);
         }
 
-        textViewPOICount.setText("No of Added POIs: " +""+cf.getResourcePoiCount(featureId));
+        textViewPOICount.setText(context.getResources().getString(R.string.numOfPois) + ": " +""+cf.getResourcePoiCount(featureId));
 
 
         getResourcesAttributes();
@@ -150,54 +146,6 @@ public class CollectedResourceDataSummary  extends ActionBarActivity {
             e.printStackTrace();
         }
 
-//        try {
-//
-//            List<TenureInformation> tenureInformations=db.getTenureInfo(featureId);
-//            db.close();
-//            if (tenureInformations.size() > 0) {
-//
-//
-//                textViewFirstName.setText(tenureInformations.get(6).getFirstName()+" "+ tenureInformations.get(10).getFirstName() +" "+ tenureInformations.get(8).getFirstName());
-//
-//                textViewVillege.setText(tenureInformations.get(3).getFirstName());
-//                textViewRegion.setText(tenureInformations.get(12).getFirstName());
-//                textViewCountry.setText(tenureInformations.get(4).getFirstName());
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//        try {
-//
-//            List<TenureInformation> tenureInformations=db.getTenureInfo(featureId);
-//            db.close();
-//            if (tenureInformations.size() > 0) {
-//                for (int i = 0; i < tenureInformations.size(); i++) {
-//
-//                    textViewFirstName.setText(tenureInformations.get(i).getFirstName());
-//                    textViewMiddleName.setText(tenureInformations.get(i).getMiddelName());
-//                    textViewLastName.setText(tenureInformations.get(i).getLastName());
-//                    textViewVillege.setText(tenureInformations.get(i).getCommunity());
-//                    textViewRegion.setText(tenureInformations.get(i).getRegion());
-//                    textViewCountry.setText(tenureInformations.get(i).getCountry());
-//                }
-//            }
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-
-        try {
-
-
-            //textViewGeoType.setText(property.getGeomType());
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-
         try {
             coordinates=db.getGeoCordinates(featureId);
 
@@ -215,7 +163,7 @@ public class CollectedResourceDataSummary  extends ActionBarActivity {
         intent.putExtra("featID",featureId);
 
         intent.putExtra("CORD",coordinates);
-        Toast.makeText(context,"Data Save Successfully",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,R.string.data_saved,Toast.LENGTH_SHORT).show();
         finish();
         startActivity(intent);
     }

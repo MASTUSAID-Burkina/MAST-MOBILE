@@ -100,11 +100,11 @@ public class ResourcePOI extends ActionBarActivity {
         poiFragment = (ResourcePoiListFragment) getFragmentManager().findFragmentById(R.id.respoi);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Resource Person List");
+        toolbar.setTitle(context.getResources().getString(R.string.title_person));
         if (toolbar != null)
             setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        lblShareType.setText("Tenure Type: "+tenureType);
+        lblShareType.setText(context.getResources().getString(R.string.tenureType) + ": "+tenureType);
 
         if (readOnly) {
             addnewPerson.setVisibility(View.GONE);
@@ -112,79 +112,6 @@ public class ResourcePOI extends ActionBarActivity {
             btnNext.setText(backStr);
         }
 
-//        addnewPerson.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                //Case to find whether it's an Add event or Edit event
-//                boolean isAddCase=false;
-//                isAddCase=cf.IsEditResourceAttribute(featureId,tenureType);
-//                //------
-//                if(isAddCase) {
-//                if (!tenureType.equalsIgnoreCase("Private (jointly)")) {
-//                    if(iOwnerCount<1) {
-//                        Intent intent = new Intent(getApplicationContext(), CaptureTenureInfo.class);
-//                        intent.putExtra("featureid", featureId);
-//                        intent.putExtra("classi", classi);
-//                        intent.putExtra("subclassi", subClassi);
-//                        intent.putExtra("tenure", tenureType);
-//                        intent.putExtra("tID", tenureID);
-//                        intent.putExtra("sID", subID);
-//                        startActivity(intent);
-//                        iOwnerCount = iOwnerCount + 1;
-//                    }
-//                    else {
-//                        //Show message
-//                        Toast.makeText(context,"You can add only one owner for tenure type: "+tenureType,Toast.LENGTH_SHORT).show();
-//
-//                    }
-//
-//
-//
-//                } else if(tenureType.equalsIgnoreCase("Private (jointly)")) {
-//                    if (iOwnerCount < 2) {
-////
-//                        if (iOwnerCount == 0) {
-//
-//                            Intent intent = new Intent(context, CaptureTenureInfo.class);
-//                            intent.putExtra("featureid", featureId);
-//                            intent.putExtra("classi", classi);
-//                            intent.putExtra("subclassi", subClassi);
-//                            intent.putExtra("tenure", tenureType);
-//                            intent.putExtra("tID", tenureID);
-//                            intent.putExtra("sID", subID);
-//                            startActivity(intent);
-//                            iOwnerCount = iOwnerCount + 1;
-//                        } else if (iOwnerCount == 1) {
-//                            Intent intent = new Intent(context, Owner2.class);
-//                            intent.putExtra("featureid", featureId);
-//                            intent.putExtra("classi", classi);
-//                            intent.putExtra("subclassi", subClassi);
-//                            intent.putExtra("tenure", tenureType);
-//                            intent.putExtra("tID", tenureID);
-//                            intent.putExtra("sID", subID);
-//                            startActivity(intent);
-//                            iOwnerCount = iOwnerCount + 1;
-//                        }
-//                    } else {
-//                        //Show message
-//                        Toast.makeText(context, "You can add only two owner for tenure type: " + tenureType, Toast.LENGTH_SHORT).show();
-//
-//                    }
-//                }
-//                }
-//                else
-//                {
-//                    //Show message
-//                    Toast.makeText(context, "You can not add more owner for tenure type: " + tenureType, Toast.LENGTH_SHORT).show();
-//                }
-//
-//            }
-//        });
-
-
-
-        //Ambar
         addnewPerson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -217,7 +144,6 @@ public class ResourcePOI extends ActionBarActivity {
                     //For Two Owner
                     else if(tenureType.equalsIgnoreCase("Private (jointly)")) {
                         if (iOwnerCount < 2) {
-//                            if (iOwnerCount == 0) {
                                 Intent intent = new Intent(context, Owner.class);
                                 intent.putExtra("featureid", featureId);
                                 intent.putExtra("classi", classi);
@@ -228,52 +154,13 @@ public class ResourcePOI extends ActionBarActivity {
                                 intent.putExtra("ownerCount", iOwnerCount);
                                 startActivity(intent);
                                 iOwnerCount = iOwnerCount + 1;
-//                            } else if (iOwnerCount == 1) {
-//                                Intent intent = new Intent(context, Owner2.class);
-//                                intent.putExtra("featureid", featureId);
-//                                intent.putExtra("classi", classi);
-//                                intent.putExtra("subclassi", subClassi);
-//                                intent.putExtra("tenure", tenureType);
-//                                intent.putExtra("tID", tenureID);
-//                                intent.putExtra("sID", subID);
-//                                startActivity(intent);
-//                                iOwnerCount = iOwnerCount + 1;
-//                            }
                         } else {
                             //Show message
                             Toast.makeText(context, "You can add only two owner for tenure type: " + tenureType, Toast.LENGTH_SHORT).show();
 
                         }
                     }
-//                    else if(tenureType.equalsIgnoreCase("Private (jointly)")) {
-//                        if (iOwnerCount < 2) {
-//                            if (iOwnerCount == 0) {
-//                                Intent intent = new Intent(context, Owner.class);
-//                                intent.putExtra("featureid", featureId);
-//                                intent.putExtra("classi", classi);
-//                                intent.putExtra("subclassi", subClassi);
-//                                intent.putExtra("tenure", tenureType);
-//                                intent.putExtra("tID", tenureID);
-//                                intent.putExtra("sID", subID);
-//                                startActivity(intent);
-//                                iOwnerCount = iOwnerCount + 1;
-//                            } else if (iOwnerCount == 1) {
-//                                Intent intent = new Intent(context, Owner2.class);
-//                                intent.putExtra("featureid", featureId);
-//                                intent.putExtra("classi", classi);
-//                                intent.putExtra("subclassi", subClassi);
-//                                intent.putExtra("tenure", tenureType);
-//                                intent.putExtra("tID", tenureID);
-//                                intent.putExtra("sID", subID);
-//                                startActivity(intent);
-//                                iOwnerCount = iOwnerCount + 1;
-//                            }
-//                        } else {
-//                            //Show message
-//                            Toast.makeText(context, "You can add only two owner for tenure type: " + tenureType, Toast.LENGTH_SHORT).show();
-//
-//                        }
-//                    }
+
                     //For Multiple Owner
                     else if ((tenureType.equalsIgnoreCase("Collective"))||(tenureType.equalsIgnoreCase("Community"))) {
                             Intent intent = new Intent(getApplicationContext(), Owner.class);
@@ -427,32 +314,6 @@ public class ResourcePOI extends ActionBarActivity {
                         startActivity(intent);
                     }
                 }
-
-
-
-
-//                DbController db = DbController.getInstance(context);
-//
-//                List<ResourceCustomAttribute> attributesSize = db.getResAttributesSize(tenureID);
-//                if (attributesSize.size() > 0) {
-//                    Intent intent = new Intent(context, CustomAttributeChange.class);
-//                    intent.putExtra("featureid", featureId);
-//                    intent.putExtra("classi", classi);
-//                    intent.putExtra("subclassi", subClassi);
-//                    intent.putExtra("tenure", tenureType);
-//                    intent.putExtra("tID", tenureID);
-//                    intent.putExtra("sID", subID);
-//                    startActivity(intent);
-//                } else {
-//
-//                    Intent intent = new Intent(context, CollectedResourceDataSummary.class);
-//                    intent.putExtra("featureid", featureId);
-//                    intent.putExtra("classi", classi);
-//                    intent.putExtra("subclassi", subClassi);
-//                    intent.putExtra("tID", tenureID);
-//                    intent.putExtra("tenure", tenureType);
-//                    startActivity(intent);
-//                }
             }
 
         });
@@ -534,8 +395,6 @@ public class ResourcePOI extends ActionBarActivity {
                                     resourcePoiSync1.setId((long) 1);
                                     resourcePoiSync1.setValue(poi_fName);
                                     resourcePoiSyncs.add(resourcePoiSync1);
-//                            property.setResPOI(resourcePoiSyncs);
-//                            resourcePoiSyncsList.add(property);
 
                                     resourcePoiSync2.setId((long) 2);
                                     resourcePoiSyncs.add(resourcePoiSync2);

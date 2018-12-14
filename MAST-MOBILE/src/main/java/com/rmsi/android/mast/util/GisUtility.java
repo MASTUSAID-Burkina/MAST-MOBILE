@@ -6,8 +6,10 @@ import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.ui.IconGenerator;
 import com.rmsi.android.mast.activity.R;
@@ -211,8 +213,6 @@ public class GisUtility {
         if(geomtype.equalsIgnoreCase(Feature.GEOM_POINT))
         {
             LatLng point = pointslist.get(0);
-
-            //WKTString = "POINT ("+point.longitude+" "+point.latitude+")";
             WKTString = point.longitude+" "+point.latitude;
         }
         else if(geomtype.equalsIgnoreCase(Feature.GEOM_LINE))
@@ -230,7 +230,6 @@ public class GisUtility {
 
                 WKTSubStr = WKTSubStr + latLng.longitude+" "+latLng.latitude;
             }
-            //WKTString = "LINESTRING ("+WKTSubStr+")";
             WKTString = WKTSubStr;
         }
         else if(geomtype.equalsIgnoreCase(Feature.GEOM_POLYGON))
@@ -248,7 +247,6 @@ public class GisUtility {
 
                 WKTSubStr = WKTSubStr + latLng.longitude+" "+latLng.latitude;
             }
-            //WKTString = "POLYGON (("+WKTSubStr+"))";
             WKTString = WKTSubStr;
         }
         return WKTString;
@@ -423,6 +421,45 @@ public class GisUtility {
         }
 
         return null;
+    }
+
+    public static Polygon makePolygonFromGooglePolygon(com.google.android.gms.maps.model.Polygon gPolygon){
+        String coords = getWKTfromPoints(Feature.GEOM_POLYGON, gPolygon.getPoints());
+        if(wktReader == null){
+            wktReader = new WKTReader();
+        }
+        try {
+            return (Polygon) wktReader.read("POLYGON ((" + coords + "))");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            CommonFunctions.getInstance().appLog("", e);
+            return null;
+        }
+    }
+
+    public static LineString makeLinestringFromGooglePolyline(com.google.android.gms.maps.model.Polyline gPolyline){
+        String coords = getWKTfromPoints(Feature.GEOM_LINE, gPolyline.getPoints());
+        if(wktReader == null){
+            wktReader = new WKTReader();
+        }
+        try {
+            return (LineString) wktReader.read("LINESTRING (" + coords + ")");
+        } catch (ParseException e) {
+            e.printStackTrace();
+            CommonFunctions.getInstance().appLog("", e);
+            return null;
+        }
+    }
+
+    public static boolean isValidGeom(Object googleGeom){
+        if (googleGeom instanceof Polyline) {
+            LineString geom = makeLinestringFromGooglePolyline((Polyline) googleGeom);
+            return geom.isValid();
+        } else if (googleGeom instanceof com.google.android.gms.maps.model.Polygon) {
+            Polygon geom = makePolygonFromGooglePolygon((com.google.android.gms.maps.model.Polygon) googleGeom);
+            return geom.isValid();
+        }
+        return true;
     }
 
     /**

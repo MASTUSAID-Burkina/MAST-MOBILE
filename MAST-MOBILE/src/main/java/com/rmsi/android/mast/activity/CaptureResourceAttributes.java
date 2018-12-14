@@ -1,13 +1,11 @@
 package com.rmsi.android.mast.activity;
 
 import android.app.Dialog;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,25 +14,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.rmsi.android.mast.db.DbController;
-import com.rmsi.android.mast.domain.ClaimType;
 import com.rmsi.android.mast.domain.Classification;
 import com.rmsi.android.mast.domain.ClassificationAttribute;
-import com.rmsi.android.mast.domain.Feature;
-import com.rmsi.android.mast.domain.Option;
-import com.rmsi.android.mast.domain.OptionAttributes;
 import com.rmsi.android.mast.domain.Property;
 import com.rmsi.android.mast.domain.ResourceCustomAttribute;
-import com.rmsi.android.mast.domain.ShareType;
-import com.rmsi.android.mast.domain.SubClassification;
 import com.rmsi.android.mast.domain.SubClassificationAttribute;
 import com.rmsi.android.mast.domain.TenureType;
 import com.rmsi.android.mast.util.CommonFunctions;
 import com.rmsi.android.mast.util.DateUtility;
+import com.rmsi.android.mast.util.GuiUtility;
 import com.rmsi.android.mast.util.StringUtility;
 
 import java.util.ArrayList;
@@ -51,7 +48,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
     private List<TenureType> optionsList=new ArrayList<>();
 //    Property property=null;
 
-    private Property propertyValidate=null;
+    private Property prop =null;
     Long featureId = 0L;
     CommonFunctions cf = CommonFunctions.getInstance();
 
@@ -59,6 +56,12 @@ public class CaptureResourceAttributes extends ActionBarActivity {
     List<SubClassificationAttribute> SubclassificationsList=new ArrayList<>();
     String polytype;
     private Spinner spinnerClass,spinnerSubClass,spinnertenureType;
+    private TextView txtValidationDate;
+    private CheckBox chartered;
+    private LinearLayout charetedFields;
+    private EditText txtComment;
+    private CheckBox inExploitation;
+    private CheckBox validatedByCouncil;
     private boolean saveResult,saveResult1;
     List<Property> propertyList=new ArrayList<>();
     List<Property> subClassificationList=new ArrayList<>();
@@ -84,12 +87,12 @@ public class CaptureResourceAttributes extends ActionBarActivity {
             featureId = extras.getLong("featureid");
         }
         if (featureId > 0) {
-            propertyValidate = DbController.getInstance(context).getProperty(featureId);
+            prop = DbController.getInstance(context).getProperty(featureId);
         }
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Capture Resource Information");
+        toolbar.setTitle(R.string.captureResInfo);
 
         if (toolbar != null)
             setSupportActionBar(toolbar);
@@ -97,8 +100,8 @@ public class CaptureResourceAttributes extends ActionBarActivity {
         if (classification == null) {
             classification = new Classification();
         }
-        if (propertyValidate == null) {
-            propertyValidate = new Property();
+        if (prop == null) {
+            prop = new Property();
         }
 
 
@@ -106,13 +109,56 @@ public class CaptureResourceAttributes extends ActionBarActivity {
         spinnerSubClass= (Spinner) findViewById(R.id.sub_classification_spinner);
         spinnertenureType= (Spinner) findViewById(R.id.tenure_spinner);
 
+        txtValidationDate = (TextView)findViewById(R.id.txtValidationDate);
+        chartered = (CheckBox) findViewById(R.id.chartered);
+        charetedFields = (LinearLayout) findViewById(R.id.charetedFields);
+        txtComment = (EditText)findViewById(R.id.txtComment);
+        inExploitation = (CheckBox) findViewById(R.id.inExploitation);
+        validatedByCouncil = (CheckBox) findViewById(R.id.validatedByCouncil);
+
+        chartered.setChecked(prop.isChartered());
+        txtComment.setText(prop.getComment());
+        inExploitation.setChecked(prop.isInExploitation());
+        validatedByCouncil.setChecked(prop.isValidatedByCouncil());
+
+        if(chartered.isChecked()){
+            charetedFields.setVisibility(View.VISIBLE);
+        } else {
+            charetedFields.setVisibility(View.GONE);
+        }
+
+        chartered.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener(){
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if(b){
+                    charetedFields.setVisibility(View.VISIBLE);
+                } else {
+                    charetedFields.setVisibility(View.GONE);
+                }
+            }
+        });
+
+        if (prop != null && !StringUtility.isEmpty(prop.getValidationDate())) {
+            txtValidationDate.setText(DateUtility.formatDateString(prop.getValidationDate()));
+        }
+
+        txtValidationDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GuiUtility.showDatePicker(txtValidationDate, txtValidationDate.getText().toString());
+            }
+        });
+
+        GuiUtility.bindActionOnLabelChange(txtValidationDate, new Runnable() {
+            @Override
+            public void run() {
+                prop.setValidationDate(txtValidationDate.getText().toString());
+            }
+        });
 
         List<ClassificationAttribute> classificationsList=  db.getClassification(true);
 
         if (classificationsList!=null) {
-//            ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(CaptureResourceAttributes.this, android.R.layout.simple_spinner_item, classificationsList);
-//            spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            spinnerClass.setAdapter(spinnerArrayAdapter);
             spinnerClass.setAdapter(new ArrayAdapter(context, android.R.layout.simple_spinner_item, classificationsList));
             ((ArrayAdapter) spinnerClass.getAdapter()).setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         }
@@ -138,8 +184,8 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
 
                 classi=((ClassificationAttribute) parent.getItemAtPosition(position)).getAttribValue();
-                propertyValidate.setClassificationValue(classi);
-                propertyValidate.setClassificationId(((ClassificationAttribute) parent.getItemAtPosition(position)).getAttribID());
+                prop.setClassificationValue(classi);
+                prop.setClassificationId(((ClassificationAttribute) parent.getItemAtPosition(position)).getAttribID());
 
                 getSubClassificationList(classificationData.getAttribID());
 
@@ -164,8 +210,8 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
 
                 subClassi=((SubClassificationAttribute) parent.getItemAtPosition(position)).getAttribValue();
-                propertyValidate.setSubClassificationValue(subClassi);
-                propertyValidate.setSubClassificationId(((SubClassificationAttribute) parent.getItemAtPosition(position)).getAttribID());
+                prop.setSubClassificationValue(subClassi);
+                prop.setSubClassificationId(((SubClassificationAttribute) parent.getItemAtPosition(position)).getAttribID());
                 subID=((SubClassificationAttribute) parent.getItemAtPosition(position)).getAttribID();
 
             }
@@ -185,17 +231,11 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
                 tenureTypenData.setAttribValue(((TenureType) parent.getItemAtPosition(position)).getAttribValue());
                 tenureTypenData.setAttribID(((TenureType) parent.getItemAtPosition(position)).getAttribID().toString());
-                propertyValidate.setTenureTypeValue(((TenureType) parent.getItemAtPosition(position)).getAttribValue());
+                prop.setTenureTypeValue(((TenureType) parent.getItemAtPosition(position)).getAttribValue());
 
                 tenureID=((TenureType) parent.getItemAtPosition(position)).getAttribID().toString();
                 tenureType=((TenureType) parent.getItemAtPosition(position)).getAttribValue();
-                propertyValidate.setTenureTypeID(((TenureType) parent.getItemAtPosition(position)).getAttribID());
-
-
-                // tenureList.add(property);
-//                tenureType=(String) parent.getItemAtPosition(position);
-//                propertyValidate.setSubClassificationValue(tenureType);
-
+                prop.setTenureTypeID(((TenureType) parent.getItemAtPosition(position)).getAttribID());
             }
 
             @Override
@@ -204,29 +244,19 @@ public class CaptureResourceAttributes extends ActionBarActivity {
             }
         });
 
-
-
         for (int i = 0; i < classificationsList.size(); i++) {
-            if (classificationsList.get(i).getAttribID().equalsIgnoreCase(StringUtility.empty(propertyValidate.getClassificationId()))) {
+            if (classificationsList.get(i).getAttribID().equalsIgnoreCase(StringUtility.empty(prop.getClassificationId()))) {
                 spinnerClass.setSelection(i);
                 break;
             }
         }
 
-
-
-
         for (int i = 0; i < optionsList.size(); i++) {
-            if (optionsList.get(i).getAttribID().equalsIgnoreCase(StringUtility.empty(propertyValidate.getTenureTypeID()))) {
+            if (optionsList.get(i).getAttribID().equalsIgnoreCase(StringUtility.empty(prop.getTenureTypeID()))) {
                 spinnertenureType.setSelection(i);
                 break;
             }
         }
-
-
-
-
-
     }
 
     private void getSubClassificationList(String classificationId) {
@@ -239,16 +269,12 @@ public class CaptureResourceAttributes extends ActionBarActivity {
         }
 
         for (int i = 0; i < SubclassificationsList.size(); i++) {
-            if (SubclassificationsList.get(i).getAttribID().equalsIgnoreCase(StringUtility.empty(propertyValidate.getSubClassificationId()))) {
+            if (SubclassificationsList.get(i).getAttribID().equalsIgnoreCase(StringUtility.empty(prop.getSubClassificationId()))) {
                 spinnerSubClass.setSelection(i);
                 break;
             }
         }
-
-
     }
-
-//
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -270,28 +296,33 @@ public class CaptureResourceAttributes extends ActionBarActivity {
     }
 
     private void saveData() {
-
         if (validateBasicInfo(context, true)) {
-
-
             boolean deleteData=DbController.getInstance(context).deleteResource(featureId);
+
+            prop.setChartered(chartered.isChecked());
+            prop.setComment(txtComment.getText().toString());
+            if(!prop.isChartered()){
+                prop.setValidationDate(null);
+                prop.setValidatedByCouncil(false);
+                prop.setInExploitation(false);
+            } else {
+                prop.setValidationDate(txtValidationDate.getText().toString());
+                prop.setValidatedByCouncil(validatedByCouncil.isChecked());
+                prop.setInExploitation(inExploitation.isChecked());
+            }
 
             boolean saveResult = DbController.getInstance(context).insertResourceAtrrValue(classificationData, featureId);
             boolean saveResultsub = DbController.getInstance(context).insertResourceAtrrValue(subClassificationData, featureId);
             boolean saveResultTenure = DbController.getInstance(context).insertResourceAtrrValue(tenureTypenData, featureId);
-            boolean saveResult1 = DbController.getInstance(context).updatePropertyBasic(propertyValidate);
+            boolean saveResult1 = DbController.getInstance(context).updateResourceBasic(prop);
             boolean saveResult3 = DbController.getInstance(context).insertFeature(featureId);
-            boolean saveResult2 = DbController.getInstance(context).updateTenureBasic(propertyValidate, featureId);
+            boolean saveResult2 = DbController.getInstance(context).updateTenureBasic(prop, featureId);
 
-
-            //boolean saveResult1 = DbController.getInstance(context).insertResourceSubClassAtrr(propertyValidate,featureId);
-            // boolean saveResult2 = DbController.getInstance(context).insertResourceTenureAtrr(tenureList,featureId);
-            //classificationsList.clear();
             subClassificationList.clear();
             tenureList.clear();
 
             if (saveResult == true) {
-                Toast.makeText(context, "DATA SAVE Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.data_saved, Toast.LENGTH_SHORT).show();
 
                 //Case to find whether it's an Add event or Edit event
                 boolean isAddCase = false;
@@ -433,7 +464,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
                 }
             } else {
-                Toast.makeText(context, "Unable to Save Data", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.unable_to_save_data, Toast.LENGTH_SHORT).show();
             }
 
         }
@@ -443,24 +474,24 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
         String strInfoMessage="Info Message";
         if (tenure.equalsIgnoreCase("Private (jointly)")) {
-            strInfoMessage="You must add only two occupants/owners and can add one or more persons of interest";
+            strInfoMessage=context.getResources().getString(R.string.infoMultipleJointStr);
         }
         else if(tenure.equalsIgnoreCase("Private (individual)")) {
-            strInfoMessage="You must add only one occupant/owner and can add one or more persons of interest";
+            strInfoMessage=context.getResources().getString(R.string.infoSingleOccupantStr);
         }
         else if(tenure.equalsIgnoreCase("Organization (informal)") || tenure.equalsIgnoreCase("Organization (formal)") ) {
-            strInfoMessage="You must add information for the point of contact for the organization/ association/ or group and can add one or more persons of interest";
+            strInfoMessage=context.getResources().getString(R.string.infoInformalOrganization);
         }
         else if(tenure.equalsIgnoreCase("Community") || tenure.equalsIgnoreCase("Collective") ) {
-            strInfoMessage="You must add one or more occupants/owners and add one or more persons of interest";
+            strInfoMessage=context.getResources().getString(R.string.infoCollective);
         }
 
         else if(tenure.equalsIgnoreCase("Public")) {
-            strInfoMessage="Please enter information agency and point of contact information for agency/authority";
+            strInfoMessage=context.getResources().getString(R.string.infoPublic);
         }
 
         else if(tenure.equalsIgnoreCase("Open") || tenure.equalsIgnoreCase("Other") ) {
-            strInfoMessage="Please enter information about how this land resource is being held or used";
+            strInfoMessage=context.getResources().getString(R.string.infoOpen);
         }
 
         return strInfoMessage;
@@ -468,25 +499,22 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
 
     private boolean validateBasicInfo(Context context, boolean b) {
-
         boolean result = true;
         String errorMessage = "";
 
-
-        if (StringUtility.isEmpty(propertyValidate.getClassificationValue())) {
-
+        if (StringUtility.isEmpty(prop.getClassificationValue())) {
             errorMessage = context.getResources().getString(R.string.SelectClassificationType);
-        }else if (propertyValidate.getClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
+        }else if (prop.getClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
             errorMessage = context.getResources().getString(R.string.SelectClassificationType);
         }
-        else if (StringUtility.isEmpty(propertyValidate.getSubClassificationValue())) {
+        else if (StringUtility.isEmpty(prop.getSubClassificationValue())) {
             errorMessage = context.getResources().getString(R.string.SelectSubClassificationType);
-        }else if (propertyValidate.getSubClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
+        }else if (prop.getSubClassificationValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
             errorMessage = context.getResources().getString(R.string.SelectSubClassificationType);
-        }else if (propertyValidate.getTenureTypeValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
+        }else if (prop.getTenureTypeValue().equalsIgnoreCase(context.getResources().getString(R.string.SelectOption))) {
             errorMessage = context.getResources().getString(R.string.SelectTENUREType);
         }
-        else if (StringUtility.isEmpty(propertyValidate.getTenureTypeValue())) {
+        else if (StringUtility.isEmpty(prop.getTenureTypeValue())) {
             errorMessage = context.getResources().getString(R.string.SelectTENUREType);
         }
 
@@ -498,17 +526,34 @@ public class CaptureResourceAttributes extends ActionBarActivity {
         return result;
     }
 
+    private void updateCount() {
+        try {
+
+
+                Property tmpProp = db.getProperty(featureId);
+
+
+        } catch (Exception e) {
+
+            e.printStackTrace();
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        if (propertyValidate != null && !StringUtility.isEmpty(propertyValidate.getClassificationId()))
+        if (prop != null && !StringUtility.isEmpty(prop.getClassificationId()))
             spinnerClass.setEnabled(true);
 
-        if (propertyValidate != null && !StringUtility.isEmpty(propertyValidate.getSubClassificationId()))
+        if (prop != null && !StringUtility.isEmpty(prop.getSubClassificationId()))
             spinnerSubClass.setEnabled(true);
 
-        if (propertyValidate != null && !StringUtility.isEmpty(propertyValidate.getTenureTypeID()))
+        if (prop != null && !StringUtility.isEmpty(prop.getTenureTypeID()))
             spinnertenureType.setEnabled(true);
+
+        updateCount();
+                    // Don't show toolbar for unclaimed parcels
+
     }
 
 }

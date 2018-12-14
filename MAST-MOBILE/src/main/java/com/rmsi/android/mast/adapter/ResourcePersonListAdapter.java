@@ -57,14 +57,6 @@ public class ResourcePersonListAdapter extends BaseAdapter {
         return persons.get(position);
     }
 
-//    public int getCount() {
-//        return 1;
-//    }
-//
-//    public Attribute getItem(int position) {
-//        return persons.get(0);
-//    }
-
     public long getItemId(int position)
     {
         return position;

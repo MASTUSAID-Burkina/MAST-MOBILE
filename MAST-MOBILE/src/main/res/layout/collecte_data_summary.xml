@@ -37,8 +37,8 @@
                 android:id="@+id/lblClaimNumber"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:padding="10dip"
-                android:text="Resource Class"
+                android:padding="5dip"
+                android:text="@string/type"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -47,7 +47,7 @@
                 android:layout_weight="1"
                 android:gravity="center"
                 android:padding="10dip"
-                android:text="abc"
+                android:text=""
                 android:textColor="#000000"
                 android:textStyle="bold" />
         </TableRow>
@@ -67,7 +67,7 @@
                 android:layout_weight="1"
                 android:gravity="left"
                 android:padding="5dip"
-                android:text="Resource SubClassification"
+                android:text="@string/subType"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -95,7 +95,7 @@
                 android:layout_weight="1"
                 android:gravity="left"
                 android:padding="5dip"
-                android:text="Resource Tenure Type"
+                android:text="@string/tenureType"
                 android:textColor="#000000"
                 android:textStyle="bold" />
 
@@ -129,7 +129,7 @@
                 android:layout_height="wrap_content"
 
                 android:background="@color/color_theme_light"
-                android:text="Tenure Information"
+                android:text="@string/SocialTenureInfo"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textSize" />
 
@@ -158,7 +158,7 @@
 
                 android:background="@color/color_theme_light"
 
-                android:text="Custom Attributes"
+                android:text="@string/title_activity_custom_attrib"
                 android:textColor="@color/black"
                 android:textSize="@dimen/textSize" />
 

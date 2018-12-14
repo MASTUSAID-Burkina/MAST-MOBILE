@@ -1494,11 +1494,15 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
                 case R.id.save_features:
                     if (MAP_MODE == FEATURE_DRAW_MAP_MODE || MAP_MODE == FEATURE_DRAW_LINE_GPS_MODE
                             || MAP_MODE == FEATURE_DRAW_POINT_GPS_MODE || MAP_MODE == FEATURE_DRAW_POLYGON_GPS_MODE) {
-                        saveNewFeature();
+                        if(!saveNewFeature()){
+                            return true;
+                        }
                         cf.saveGPSmode(CLEAR_MODE, null);
                         googlemapReinitialized = false;
                     } else if (MAP_MODE == FEATURE_EDIT_MODE) {
-                        updateFeature();
+                        if(!updateFeature()){
+                            return true;
+                        }
                     }
 
                     mode.finish();
@@ -1651,11 +1655,16 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
 
     }
 
-    private void saveNewFeature() {
+    private boolean saveNewFeature() {
         String geomtype = "";
         int iIndex = 0;
         List<LatLng> pointslist = new ArrayList<LatLng>();
         try {
+            if(!GisUtility.isValidGeom(drawnFeature)){
+                Toast.makeText(context, R.string.invalidGeometry, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+
             if (drawnFeature instanceof Polyline) {
                 Polyline tmp = (Polyline) drawnFeature;
 
@@ -1700,19 +1709,26 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
                     startActivity(myIntent);
                 } else {
                     Toast.makeText(context, R.string.unableSaveFeatureMsg, Toast.LENGTH_SHORT).show();
+                    return false;
                 }
             }
         } catch (Exception e) {
             Toast.makeText(context, R.string.unableSaveFeatureMsg, Toast.LENGTH_SHORT).show();
             cf.appLog("", e);
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
-    private void updateFeature() {
+    private boolean updateFeature() {
         String geomtype = "";
         List<LatLng> pointslist = new ArrayList<LatLng>();
         try {
+            if(!GisUtility.isValidGeom(drawnFeature)){
+                Toast.makeText(context, R.string.invalidGeometry, Toast.LENGTH_SHORT).show();
+                return false;
+            }
             if (drawnFeature instanceof Polyline) {
                 Polyline tmp = (Polyline) drawnFeature;
                 pointslist = tmp.getPoints();
@@ -1741,14 +1757,18 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
                     Toast.makeText(context, R.string.updateFeatureMsg, Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(context, R.string.unableUpdatefeatureMsg, Toast.LENGTH_SHORT).show();
+                    return false;
                 }
             } else {
                 Toast.makeText(context, R.string.unableUpdatefeatureMsg, Toast.LENGTH_SHORT).show();
+                return false;
             }
         } catch (Exception e) {
             cf.appLog("", e);
             e.printStackTrace();
+            return false;
         }
+        return true;
     }
 
     private void cleanDrawingMarkers() {

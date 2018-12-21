@@ -36,7 +36,7 @@
         <!--item>Configure Data Collection Tools</item-->
         <item>Configurer la synchronisation automatique</item>
         <item>Configurer les paramètres de cartographie</item>
-        <item>Choisir la zone d'intêret</item>
+        <item>Choisir la zone d\'intêret</item>
         <item>Dispositif BlueTooth</item>
     </string-array>
     <string-array name="Language_arrays">

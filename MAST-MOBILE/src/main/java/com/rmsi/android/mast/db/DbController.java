@@ -1870,12 +1870,13 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
+
+                    attribute.setName(cur.getString(indxName));
 
                     if (attribute.getControlType() == 5) { // Spinner
                         List<Option> optionList = new ArrayList<Option>();
@@ -2017,11 +2018,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -2152,11 +2154,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -2260,11 +2263,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -2379,11 +2383,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -2528,11 +2533,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -2797,11 +2803,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -2918,11 +2925,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -3038,11 +3046,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner
@@ -3157,11 +3166,12 @@ public class DbController extends SQLiteOpenHelper {
                     if (!cur.isNull(indxValue))
                         attribute.setValue(cur.getString(indxValue));
 
-                    ///ambar
-                    if (lang.equalsIgnoreCase("en") && !TextUtils.isEmpty(cur.getString(indxName))) {
-                        attribute.setName(cur.getString(indxName));
+                    attribute.setName(cur.getString(indxName));
+
+                    if (lang.equalsIgnoreCase("en")) {
+                        attribute.setLabelName(cur.getString(indxName));
                     } else {
-                        attribute.setName(cur.getString(indxName));
+                        attribute.setLabelName(cur.getString(indxNameOtherLang));
                     }
 
                     if (attribute.getControlType() == 5) { // Spinner

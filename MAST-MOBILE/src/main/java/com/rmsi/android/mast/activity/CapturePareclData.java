@@ -1061,7 +1061,7 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
                 double areaMeter = area * (Math.pow(111319.9, 2)) * Math.cos(Math.toRadians(tmpJtsPoints.get(0).y));
                 String areaStr = df.format(areaMeter);
                 if (actionMode != null) {
-                    actionMode.setTitle(areaStr + " sqm");
+                    actionMode.setTitle(areaStr + " m2");
                 }
             }
         } else if (MAP_MODE == FEATURE_INFO_MODE) {
@@ -3254,7 +3254,7 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
                     double area = polygonJts.getArea();
                     double areaMeter = area * (Math.pow(111319.9, 2)) * Math.cos(Math.toRadians(polygonJts.getCoordinates()[0].y));
                     String areaStr = df.format(areaMeter);
-                    showToast(getResources().getString(R.string.areaTxt) + " : " + areaStr + " Sqm", Toast.LENGTH_LONG, Gravity.CENTER);
+                    showToast(getResources().getString(R.string.areaTxt) + " : " + areaStr + " m2", Toast.LENGTH_LONG, Gravity.CENTER);
                 } else if (MAP_MODE == MEASURE_FEATURE_LENGTH_MODE && !TextUtils.isEmpty(coordinates)) {
                     Geometry geom = new WKTReader().read("LINESTRING (" + coordinates + ")");
                     LineString lineString = (LineString) geom;

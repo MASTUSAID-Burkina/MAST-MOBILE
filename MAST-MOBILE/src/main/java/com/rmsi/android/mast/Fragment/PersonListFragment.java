@@ -124,7 +124,6 @@ public class PersonListFragment extends ListFragment implements ListActivity {
                         myIntent.putExtra("groupid", person.getId());
                         myIntent.putExtra("featureid", person.getFeatureId());
                         myIntent.putExtra("rightId", person.getRightId());
-                        myIntent.putExtra("disputeId", person.getDisputeId());
                         startActivity(myIntent);
                         return true;
                     case R.id.delete_entry:

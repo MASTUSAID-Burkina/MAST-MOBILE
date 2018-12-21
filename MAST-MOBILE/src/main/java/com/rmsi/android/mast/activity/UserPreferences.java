@@ -37,6 +37,7 @@ public class UserPreferences extends ActionBarActivity {
     String lang = "";
     String dct = "";
     private String corrdinates = null;
+    private int selectedAOIPos = -1;
 
     Dialog dialog = null;
     boolean auto;
@@ -211,48 +212,38 @@ public class UserPreferences extends ActionBarActivity {
                     Button save = (Button) dialog.findViewById(R.id.btn_ok);
                     save.setText("OK");
 
-//
-                    ArrayAdapter<AOI> adapter = new ArrayAdapter<AOI>(context,
-                            R.layout.item_list_single_choice, aoiList);
+                    ArrayAdapter<AOI> adapter = new ArrayAdapter<AOI>(context, R.layout.item_list_single_choice, aoiList);
 
                     listViewForPersonSubtype.setAdapter(adapter);
                     for (int i = 0; i < aoiList.size(); i++) {
                         if (aoiList.get(i).getCoOrdinates().equalsIgnoreCase(cf.getAOICoordinates())) {
                             listViewForPersonSubtype.setItemChecked(i, true);
+                            selectedAOIPos = i;
+                            corrdinates = aoiList.get(i).getCoOrdinates();
                             break;
                         }
                     }
 
                     listViewForPersonSubtype.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
-                        public void onItemClick(AdapterView<?> parent,
-                                                View view, int position, long id) {
-
-                            corrdinates = aoiList.get(position).getCoOrdinates();
-
-
+                        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                            if(selectedAOIPos == position){
+                                listViewForPersonSubtype.setItemChecked(position, false);
+                                corrdinates = null;
+                                selectedAOIPos = -1;
+                            } else {
+                                corrdinates = aoiList.get(position).getCoOrdinates();
+                                selectedAOIPos = position;
+                            }
                         }
                     });
 
                     save.setOnClickListener(new OnClickListener() {
-                        //Run when button is clicked
                         @Override
                         public void onClick(View v) {
-
-                            if (corrdinates == null) {
-                                String info = getResources().getString(R.string.info);
-                                String msg = "Please Select any Option.";
-                                cf.showMessage(context, info, msg);
-
-                            } else {
-                                dialog.dismiss();
-                                cf.saveAOI(corrdinates);
-                                recreate();
-                                //listViewForPersonSubtype.setItemChecked(position, true);
-                                // cf.loadLocale(getApplicationContext());
-
-
-                            }
+                            cf.saveAOI(corrdinates);
+                            recreate();
+                            dialog.dismiss();
                         }
                     });
 

@@ -236,14 +236,14 @@ public class CaptureDataMapActivity extends AppCompatActivity implements OnMapRe
 
         //The BroadcastReceiver that listens for bluetooth broadcasts
 
-        try {
-            IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-
-
-            this.registerReceiver(BTReceiver, filter2);
-        }catch (Exception e){
-            cf.appLog("",e);
-        }
+//        try {
+//            IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+//
+//
+//            this.registerReceiver(BTReceiver, filter2);
+//        }catch (Exception e){
+//            cf.appLog("",e);
+//        }
 
 
         Intent intent = getIntent();
@@ -609,11 +609,11 @@ public class CaptureDataMapActivity extends AppCompatActivity implements OnMapRe
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
         locationManager.removeUpdates(locationListener);
-        try {
-            this.unregisterReceiver(BTReceiver);
-        }catch (Exception e){
-            e.getMessage();
-        }
+//        try {
+//            this.unregisterReceiver(BTReceiver);
+//        }catch (Exception e){
+//            e.getMessage();
+//        }
 //        handler.removeCallbacks((Runnable) CapturePareclData.this);
       //  handler.removeCallbacksAndMessages(null);
         try {
@@ -3732,55 +3732,19 @@ public class CaptureDataMapActivity extends AppCompatActivity implements OnMapRe
     }
 
     //The BroadcastReceiver that listens for bluetooth broadcasts
-    private final BroadcastReceiver BTReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-
-            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                //Do something if connected
-                // Get the BluetoothDevice object from the Intent
-                new ConnectingDevice(intent).execute();
-
-
-//                final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-//                CommonFunctions.bluetoothSocket = null;
-//                if (CommonFunctions.bluetoothSocket == null) {
-//                    handler.postDelayed(new Runnable() {
-//                        public void run() {
-//                            mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-//                            boolean isEnabled = mBluetoothAdapter.isEnabled();
-//                            if (!isEnabled) {
-//                                Intent enableBtIntent = new Intent(
-//                                        BluetoothAdapter.ACTION_REQUEST_ENABLE);
-//                                startActivityForResult(enableBtIntent, 30);
-//                                handler.postDelayed(this, 5000);
-//                            } else {
-//                                //   getAccuracyfromExternalDevice();
-//                                CommonFunctions.connectBluetoothDevice(device.getName());
-//                                if (CommonFunctions.bluetoothSocket.isConnected()) {
-//                                    isBTActive = true;
+//    private final BroadcastReceiver BTReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
 //
 //
-//                                } else {
-//                                    CommonFunctions.bluetoothSocket = null;
-//                                }
-//
-//                                if (isBTActive == true) {
-//                                    handler.removeCallbacks(this);
-//                                    isBTActive = false;
-//                                } else {
-//                                    handler.postDelayed(this, 5000);
-//                                }
-//                            }
-//                        }
-//                    }, 5000);
-//
-//                }
-            }
-        }
-            };
+//            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+//                //Do something if connected
+//                // Get the BluetoothDevice object from the Intent
+//                new ConnectingDevice(intent).execute();
+//            }
+//        }
+//            };
 
 
     public class AddTask extends AsyncTask<String, Integer, String> {

@@ -30,6 +30,7 @@ import com.rmsi.android.mast.domain.ResourceCustomAttribute;
 import com.rmsi.android.mast.domain.ResourceOwner;
 import com.rmsi.android.mast.domain.ResourcePersonOfInterest;
 import com.rmsi.android.mast.domain.ResourcePoiSync;
+import com.rmsi.android.mast.domain.TenureType;
 import com.rmsi.android.mast.util.CommonFunctions;
 import com.rmsi.android.mast.util.GuiUtility;
 
@@ -118,12 +119,12 @@ public class ResourcePOI extends ActionBarActivity {
 
                 //Case to find whether it's an Add event or Edit event
                 boolean isAddCase=false;
-                isAddCase=cf.IsEditResourceAttribute(featureId,tenureType);
+                isAddCase=cf.IsEditResourceAttribute(featureId,tenureID);
                 //------
                 if(isAddCase) {
 
                     //For Single Owner
-                    if ((tenureType.equalsIgnoreCase("Private (individual)"))||(tenureType.equalsIgnoreCase("Organization (formal)"))||(tenureType.equalsIgnoreCase("Organization (informal)"))||(tenureType.equalsIgnoreCase("Public"))) {
+                    if ((tenureID.equalsIgnoreCase(TenureType.CODE_PRIVATE_INDIVIDUAL))||(tenureID.equalsIgnoreCase(TenureType.CODE_ORGANIZATION_FORMAL))||(tenureID.equalsIgnoreCase(TenureType.CODE_ORGANIZATION_INFORMAL))||(tenureID.equalsIgnoreCase(TenureType.CODE_PUBLIC))) {
                         if (iOwnerCount < 1) {
                             Intent intent = new Intent(getApplicationContext(), Owner.class);
                             intent.putExtra("featureid", featureId);
@@ -136,13 +137,13 @@ public class ResourcePOI extends ActionBarActivity {
                             iOwnerCount = iOwnerCount + 1;
                         } else {
                             //Show message
-                            Toast.makeText(context, "You can add only one owner for tenure type: " + tenureType, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.addOneOwner), Toast.LENGTH_SHORT).show();
 
                         }
                     }
 
                     //For Two Owner
-                    else if(tenureType.equalsIgnoreCase("Private (jointly)")) {
+                    else if(tenureID.equalsIgnoreCase(TenureType.CODE_PRIVATE_JOINT)) {
                         if (iOwnerCount < 2) {
                                 Intent intent = new Intent(context, Owner.class);
                                 intent.putExtra("featureid", featureId);
@@ -156,13 +157,13 @@ public class ResourcePOI extends ActionBarActivity {
                                 iOwnerCount = iOwnerCount + 1;
                         } else {
                             //Show message
-                            Toast.makeText(context, "You can add only two owner for tenure type: " + tenureType, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.addTwoOwner), Toast.LENGTH_SHORT).show();
 
                         }
                     }
 
                     //For Multiple Owner
-                    else if ((tenureType.equalsIgnoreCase("Collective"))||(tenureType.equalsIgnoreCase("Community"))) {
+                    else if ((tenureID.equalsIgnoreCase(TenureType.CODE_COLLECTIVE))||(tenureID.equalsIgnoreCase(TenureType.CODE_COMMUNITY))) {
                             Intent intent = new Intent(getApplicationContext(), Owner.class);
                             intent.putExtra("featureid", featureId);
                             intent.putExtra("classi", classi);
@@ -179,7 +180,7 @@ public class ResourcePOI extends ActionBarActivity {
                     else
                     {
                         //Show message
-                        Toast.makeText(context, "You can not add more owner for tenure type: " + tenureType, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getResources().getString(R.string.cannotAddMoreOwners), Toast.LENGTH_SHORT).show();
                     }
                 }
 
@@ -197,16 +198,16 @@ public class ResourcePOI extends ActionBarActivity {
                 if (tenureTypeID!=10 && tenureTypeID!=18  && tenureTypeID!=14 && tenureTypeID!=13){
                     int checkPrimaryOccupant= DbController.getInstance(context).getPrimaryOccupant(featureId);
                     if (checkPrimaryOccupant==0){
-                        Toast.makeText(context, "You should add atleast One Primary Occupant", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getResources().getString(R.string.addPrimaryOccupant), Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
 
                 boolean isAddCase=false;
-                isAddCase=cf.IsEditResourceAttribute(featureId,tenureType);
+                isAddCase=cf.IsEditResourceAttribute(featureId,tenureID);
 
                 //------ Special case for multiple owner for tenure type :- Collective and community
-                if((tenureType.equalsIgnoreCase("Collective"))||(tenureType.equalsIgnoreCase("Community"))){
+                if((tenureID.equalsIgnoreCase(TenureType.CODE_COLLECTIVE))||(tenureID.equalsIgnoreCase(TenureType.CODE_COMMUNITY))){
                     DbController db = DbController.getInstance(context);
                     int iGrpID=db.getOwnerCount(featureId);
                     if(iGrpID==0){
@@ -219,13 +220,13 @@ public class ResourcePOI extends ActionBarActivity {
                 //------ Special case for multiple owner for tenure type :- Collective and community
                 //------
                 if(isAddCase) {
-                    if (tenureType.equalsIgnoreCase("Private (jointly)")) {
+                    if (tenureID.equalsIgnoreCase(TenureType.CODE_PRIVATE_JOINT)) {
                         if (iOwnerCount == 0) {
-                            Toast.makeText(context, "You should add atleast Owner", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.addOwner), Toast.LENGTH_SHORT).show();
 
                         }
                         if (iOwnerCount == 1) {
-                            Toast.makeText(context, "You should add one more Owner", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.addOneMoreOwner), Toast.LENGTH_SHORT).show();
                         }
                         if (iOwnerCount == 2) {
                             DbController db = DbController.getInstance(context);
@@ -255,9 +256,9 @@ public class ResourcePOI extends ActionBarActivity {
                         }
 
                     }
-                    if (!tenureType.equalsIgnoreCase("Private (jointly)")) {
+                    if (!tenureID.equalsIgnoreCase(TenureType.CODE_PRIVATE_JOINT)) {
                         if (iOwnerCount == 0) {
-                            Toast.makeText(context, "You should add atleast One Owner", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, context.getResources().getString(R.string.addOwner), Toast.LENGTH_SHORT).show();
 
                         } else {
                             DbController db = DbController.getInstance(context);
@@ -325,11 +326,11 @@ public class ResourcePOI extends ActionBarActivity {
 
                 //Case to find whether it's an Add event or Edit event
                 boolean isAddCase=false;
-                isAddCase=cf.IsEditResourceAttribute(featureId,tenureType);
+                isAddCase=cf.IsEditResourceAttribute(featureId,tenureID);
                 //------
 
                 //------ Special case for multiple owner for tenure type :- Collective and community
-                if((tenureType.equalsIgnoreCase("Collective"))||(tenureType.equalsIgnoreCase("Community"))){
+                if((tenureID.equalsIgnoreCase(TenureType.CODE_COLLECTIVE))||(tenureID.equalsIgnoreCase(TenureType.CODE_COMMUNITY))){
                     DbController db = DbController.getInstance(context);
                     int iGrpID=db.getOwnerCount(featureId);
                     if(iGrpID==0){
@@ -343,7 +344,7 @@ public class ResourcePOI extends ActionBarActivity {
                 if(isAddCase) {
 
                     if (iOwnerCount == 0) {
-                        Toast.makeText(context, "There should be at least one owner", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, context.getResources().getString(R.string.addOwner), Toast.LENGTH_SHORT).show();
                     } else {
                         final Dialog dialog = new Dialog(context, R.style.DialogTheme);
                         dialog.setContentView(R.layout.dialog_person_of_interest);

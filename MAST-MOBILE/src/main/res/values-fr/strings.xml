@@ -611,4 +611,10 @@
     <string name="numOfPois">Nombre de POI ajoutés</string>
     <string name="captureResInfo">Capturer les informations sur les ressources</string>
     <string name="invalidGeometry">Géométrie invalide! S\'il vous plaît, corrigez avant de sauvegarder.</string>
+    <string name="addOneOwner">Vous ne pouvez ajouter qu\'un seul propriétaire</string>
+    <string name="addTwoOwner">Vous pouvez ajouter que deux propriétaires</string>
+    <string name="cannotAddMoreOwners">Vous ne pouvez pas ajouter plus de propriétaires</string>
+    <string name="addPrimaryOccupant">Vous devez ajouter au moins un occupant principal</string>
+    <string name="addOneMoreOwner">Vous devriez ajouter un autre propriétaire</string>
+    <string name="addOwner">Vous devez ajouter au moins un propriétaire</string>
 </resources>

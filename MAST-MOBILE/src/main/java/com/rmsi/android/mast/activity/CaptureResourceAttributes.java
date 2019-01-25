@@ -326,9 +326,9 @@ public class CaptureResourceAttributes extends ActionBarActivity {
 
                 //Case to find whether it's an Add event or Edit event
                 boolean isAddCase = false;
-                isAddCase = cf.IsEditResourceAttribute(featureId, tenureType);
+                isAddCase = cf.IsEditResourceAttribute(featureId, tenureID);
                 //------
-                if((tenureType.equalsIgnoreCase("Collective"))||(tenureType.equalsIgnoreCase("Community"))){
+                if((tenureType.equalsIgnoreCase(TenureType.CODE_COLLECTIVE))||(tenureType.equalsIgnoreCase(TenureType.CODE_COMMUNITY))){
                     DbController db = DbController.getInstance(context);
                     int iGrpID=db.getOwnerCount(featureId);
                     if(iGrpID==0){
@@ -342,7 +342,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                 //Case for Add Attribute
                 if (isAddCase) {
 
-                    if ((tenureType.equalsIgnoreCase("Open")) || (tenureType.equalsIgnoreCase("Other"))) {
+                    if (tenureType.equalsIgnoreCase(TenureType.CODE_OPEN)) {
                         DbController db = DbController.getInstance(context);
 
                         List<ResourceCustomAttribute> attributesSize = db.getResAttributesSize(tenureID);
@@ -369,7 +369,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                             startActivity(intent);
 
                         }
-                    } else if ((!tenureType.equalsIgnoreCase("Open")) || (!tenureType.equalsIgnoreCase("Other"))) {
+                    } else if (!tenureType.equalsIgnoreCase(TenureType.CODE_OPEN)) {
 
                         final Dialog dialog = new Dialog(context, R.style.DialogTheme);
                         dialog.setContentView(R.layout.dialog_for_info);
@@ -382,7 +382,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                         final TextView cnfrmMsg = (TextView) dialog.findViewById(R.id.textView_cnfrm_msg);
                         cnfrmMsg.setVisibility(View.VISIBLE);
                         txtTenureType.setText(tenureType);
-                        txtInfoMsg.setText(GetInfoMessage(tenureType));
+                        txtInfoMsg.setText(GetInfoMessage(tenureID));
                         proceed.setText(getResources().getText(R.string.yes));
                         cancel.setText(getResources().getText(R.string.no));
 
@@ -415,13 +415,11 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                         });
                         dialog.show();
                     }
-                    //Case for Edit Attribute
-
                 }
 
                 else {
 
-                    if ((tenureType.equalsIgnoreCase("Open")) || (tenureType.equalsIgnoreCase("Other"))) {
+                    if (tenureType.equalsIgnoreCase(TenureType.CODE_OPEN)) {
                         DbController db = DbController.getInstance(context);
 
                         List<ResourceCustomAttribute> attributesSize = db.getResAttributesSize(tenureID);
@@ -448,7 +446,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                             startActivity(intent);
 
                         }
-                    }else {
+                    } else {
                         Intent nextScreen = new Intent(context, ResourcePOI.class);
 
                         nextScreen.putExtra("featureid", featureId);
@@ -459,9 +457,7 @@ public class CaptureResourceAttributes extends ActionBarActivity {
                         nextScreen.putExtra("sID", subID);
                         finish();
                         startActivity(nextScreen);
-
                     }
-
                 }
             } else {
                 Toast.makeText(context, R.string.unable_to_save_data, Toast.LENGTH_SHORT).show();
@@ -473,24 +469,24 @@ public class CaptureResourceAttributes extends ActionBarActivity {
     private String GetInfoMessage(String tenure) {
 
         String strInfoMessage="Info Message";
-        if (tenure.equalsIgnoreCase("Private (jointly)")) {
+        if (tenure.equalsIgnoreCase(TenureType.CODE_PRIVATE_JOINT)) {
             strInfoMessage=context.getResources().getString(R.string.infoMultipleJointStr);
         }
-        else if(tenure.equalsIgnoreCase("Private (individual)")) {
+        else if(tenure.equalsIgnoreCase(TenureType.CODE_PRIVATE_INDIVIDUAL)) {
             strInfoMessage=context.getResources().getString(R.string.infoSingleOccupantStr);
         }
-        else if(tenure.equalsIgnoreCase("Organization (informal)") || tenure.equalsIgnoreCase("Organization (formal)") ) {
+        else if(tenure.equalsIgnoreCase(TenureType.CODE_ORGANIZATION_INFORMAL) || tenure.equalsIgnoreCase(TenureType.CODE_ORGANIZATION_FORMAL) ) {
             strInfoMessage=context.getResources().getString(R.string.infoInformalOrganization);
         }
-        else if(tenure.equalsIgnoreCase("Community") || tenure.equalsIgnoreCase("Collective") ) {
+        else if(tenure.equalsIgnoreCase(TenureType.CODE_COMMUNITY) || tenure.equalsIgnoreCase(TenureType.CODE_COLLECTIVE) ) {
             strInfoMessage=context.getResources().getString(R.string.infoCollective);
         }
 
-        else if(tenure.equalsIgnoreCase("Public")) {
+        else if(tenure.equalsIgnoreCase(TenureType.CODE_PUBLIC)) {
             strInfoMessage=context.getResources().getString(R.string.infoPublic);
         }
 
-        else if(tenure.equalsIgnoreCase("Open") || tenure.equalsIgnoreCase("Other") ) {
+        else if(tenure.equalsIgnoreCase(TenureType.CODE_OPEN)) {
             strInfoMessage=context.getResources().getString(R.string.infoOpen);
         }
 

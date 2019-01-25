@@ -293,7 +293,7 @@ public class CustomAttributeChange extends ActionBarActivity {
 
                     //Case to find whether it's an Add event or Edit event
                     boolean isAddCase = false;
-                    isAddCase = cf.IsEditResourceAttribute(featureId, tenureType);
+                    isAddCase = cf.IsEditResourceAttribute(featureId, tenureID);
                     //------
                     if (isAddCase) {
                         if (attributeList.size() == 0) {

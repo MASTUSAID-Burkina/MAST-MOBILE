@@ -56,6 +56,7 @@ import com.rmsi.android.mast.domain.AOI;
 import com.rmsi.android.mast.domain.Attribute;
 import com.rmsi.android.mast.domain.Feature;
 import com.rmsi.android.mast.domain.Property;
+import com.rmsi.android.mast.domain.TenureType;
 import com.rmsi.android.mast.domain.User;
 import com.vividsolutions.jts.io.WKTReader;
 
@@ -746,12 +747,12 @@ public class CommonFunctions {
 
 
     //Ambar
-    public boolean IsEditResourceAttribute(long featurID,String tenureType){
+    public boolean IsEditResourceAttribute(long featurID,String tenureId){
          DbController db = DbController.getInstance(getApplicationContext());
 
         int iGrpID=db.getOwnerCount(featurID);
         boolean isAddCase=false;
-        if (tenureType.equalsIgnoreCase("Private (jointly)")) {
+        if (tenureId.equalsIgnoreCase(TenureType.CODE_PRIVATE_JOINT)) {
             if(iGrpID==2) {
                 isAddCase = false;
             }
@@ -761,7 +762,7 @@ public class CommonFunctions {
             }
 
         }
-        else  if ((tenureType.equalsIgnoreCase("Private (individual)")) || (tenureType.equalsIgnoreCase("Organization (formal)")) || (tenureType.equalsIgnoreCase("Organization (informal)"))||(tenureType.equalsIgnoreCase("Public"))) {
+        else  if ((tenureId.equalsIgnoreCase(TenureType.CODE_PRIVATE_INDIVIDUAL)) || (tenureId.equalsIgnoreCase(TenureType.CODE_ORGANIZATION_FORMAL)) || (tenureId.equalsIgnoreCase(TenureType.CODE_ORGANIZATION_INFORMAL))||(tenureId.equalsIgnoreCase(TenureType.CODE_PUBLIC))) {
             if(iGrpID==1) {
                 isAddCase = false;
             }
@@ -769,7 +770,7 @@ public class CommonFunctions {
                 isAddCase = true;
             }
         }
-        else if ((tenureType.equalsIgnoreCase("Collective")) || (tenureType.equalsIgnoreCase("Community"))) {
+        else if ((tenureId.equalsIgnoreCase(TenureType.CODE_COLLECTIVE)) || (tenureId.equalsIgnoreCase(TenureType.CODE_COMMUNITY))) {
 //            if(iGrpID>0) {
 //                isAddCase = false;
 //            }
@@ -779,7 +780,7 @@ public class CommonFunctions {
             isAddCase = true;
         }
 
-        else if ((tenureType.equalsIgnoreCase("Open")) || (tenureType.equalsIgnoreCase("Other"))) {
+        else if ((tenureId.equalsIgnoreCase(TenureType.CODE_OPEN))) {
 //            if(iGrpID==1) {
 //                isAddCase = false;
 //            }

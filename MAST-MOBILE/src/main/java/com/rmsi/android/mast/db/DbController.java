@@ -4540,6 +4540,7 @@ public class DbController extends SQLiteOpenHelper {
             getDb().delete(ResourceCustomAttribute.TABLE_NAME, null, null);
             getDb().delete(TenureType.TABLE_NAME, null, null);
             getDb().delete(AOI.TABLE_NAME, null, null);
+			getDb().delete(Village.TABLE_NAME, null, null);
 
             if (projectdata.has("Extent")) {
                 String mapExtent = projectdata.getString("Extent");

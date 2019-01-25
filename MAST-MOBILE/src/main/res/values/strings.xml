@@ -611,4 +611,10 @@
     <string name="numOfPois">No of Added POIs</string>
     <string name="captureResInfo">Capture Resource Information</string>
     <string name="invalidGeometry">Invalid geometry! Please, correct before saving.</string>
+    <string name="addOneOwner">You can add only one owner</string>
+    <string name="addTwoOwner">You can add only two owners</string>
+    <string name="cannotAddMoreOwners">You cannot add more owners</string>
+    <string name="addPrimaryOccupant">You should add at least one primary occupant</string>
+    <string name="addOneMoreOwner">You should add one more owner</string>
+    <string name="addOwner">You should add at least one owner</string>
 </resources>

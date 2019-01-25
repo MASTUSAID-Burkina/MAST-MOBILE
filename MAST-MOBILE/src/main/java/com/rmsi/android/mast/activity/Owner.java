@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.rmsi.android.mast.adapter.ResourceAttributeAdapter;
 import com.rmsi.android.mast.db.DbController;
 import com.rmsi.android.mast.domain.Attribute;
+import com.rmsi.android.mast.domain.TenureType;
 import com.rmsi.android.mast.util.CommonFunctions;
 import com.rmsi.android.mast.util.GuiUtility;
 import com.rmsi.android.mast.util.KeyboardUtil;
@@ -80,11 +81,11 @@ public class Owner extends ActionBarActivity {
 
             //Case to find whether it's an Add event or Edit event
             boolean isAddCase = false;
-            isAddCase = cf.IsEditResourceAttribute(featureId, tenureType);
+            isAddCase = cf.IsEditResourceAttribute(featureId, tenureID);
             //------
 
             //------ Special case for multiple owner for tenure type :- Collective and community
-            if ((tenureType.equalsIgnoreCase("Collective")) || (tenureType.equalsIgnoreCase("Community"))) {
+            if ((tenureID.equalsIgnoreCase(TenureType.CODE_COLLECTIVE)) || (tenureID.equalsIgnoreCase(TenureType.CODE_COMMUNITY))) {
                 if (groupId == 0) {
                     isAddCase = true;
                 } else {
@@ -95,7 +96,7 @@ public class Owner extends ActionBarActivity {
 
             //Case for Add Attribute
             if (isAddCase) {
-                if (tenureType.equalsIgnoreCase("Private (jointly)")) {
+                if (tenureID.equalsIgnoreCase(TenureType.CODE_PRIVATE_JOINT)) {
                     if (groupId == 0) {
                         attributes = db.getJointAttributesByFlag(tenureID, featureId);
                     } else {
@@ -248,91 +249,8 @@ public class Owner extends ActionBarActivity {
         }
     }
 
-
-//    private void saveData() {
-//        if (validate()) {
-//            try {
-//                boolean saveResult = DbController.getInstance(context).savePropAttributes(attributes, featureId);
-//
-//                Long a=attributes.get(0).getGroupId();
-//
-//                if (saveResult) {
-//                    cf.showToast(context, R.string.data_saved, Toast.LENGTH_SHORT);
-//
-//                    if (tenureType.equalsIgnoreCase("Private (jointly)")){
-//                        Intent intent=new Intent(context,Owner2.class);
-//                        intent.putExtra("featureid", featureId);
-//                        intent.putExtra("grpID", a);
-//                        intent.putExtra("classi", classi);
-//                        intent.putExtra("subclassi", subClassi);
-//                        intent.putExtra("tenure", tenureType);
-//                        intent.putExtra("tID",tenureID);
-//                        intent.putExtra("sID",subID);
-//                        startActivity(intent);
-//                    }else{
-//                        DbController db = DbController.getInstance(context);
-//                        List<ResourceCustomAttribute> attributesSize = db.getResAttributesSize(tenureID);
-//                        if (attributesSize.size()>0) {
-//                            Intent intent = new Intent(context, CustomAttributeChange.class);
-//                            intent.putExtra("featureid", featureId);
-//                            intent.putExtra("classi", classi);
-//                            intent.putExtra("subclassi", subClassi);
-//                            intent.putExtra("tenure", tenureType);
-//                            intent.putExtra("tID",tenureID);
-//                            intent.putExtra("sID", subID);
-//                            startActivity(intent);
-//                        }else{
-//
-//                            Intent intent=new Intent(CaptureTenureInfo.this,CollectedResourceDataSummary.class);
-//                            intent.putExtra("featureid", featureId);
-//                            intent.putExtra("classi", classi);
-//                            intent.putExtra("subclassi", subClassi);
-//                            intent.putExtra("tID",tenureID);
-//                            intent.putExtra("tenure", tenureType);
-//                            startActivity(intent);
-//                        }
-//                    }
-//
-//
-//
-//                } else {
-//                    cf.showToast(context, R.string.unable_to_save_data, Toast.LENGTH_SHORT);
-//                }
-//            } catch (Exception e) {
-//                cf.appLog("", e);
-//                e.printStackTrace();
-//                cf.showToast(context, R.string.unable_to_save_data, Toast.LENGTH_SHORT);
-//            }
-//        } else {
-//            cf.showToast(context, R.string.fill_mandatory, Toast.LENGTH_SHORT);
-//        }
-//    }
-
     public boolean validate() {
         return ResOwnGuiUtility.validateAttributes(attributes, true);
     }
-
-    //
-//        if (!property.validateTenureInfo(context, true)) {
-//            return false;
-//        }
-//        //boolean saveResult = DbController.getInstance(context).saveAttributesListValues(attributes);
-//        boolean saveResult = DbController.getInstance(context).insertTenureResourceAtrr(property,featureId);
-//
-//        if (saveResult==true){
-//            Toast.makeText(context,"DATA SAVE Successfully",Toast.LENGTH_SHORT).show();
-//            Intent intent=new Intent(context,CoustomAttribute.class);
-//            intent.putExtra("featureid", featureId);
-//            intent.putExtra("classi", classi);
-//            intent.putExtra("subclassi", subClassi);
-//            intent.putExtra("tenure", tenureType);
-//            startActivity(intent);
-//        }
-//        else {
-//            Toast.makeText(context,"Unable to Save Data",Toast.LENGTH_SHORT).show();
-//        }
-//        return saveResult;
-//    }
-
 
 }

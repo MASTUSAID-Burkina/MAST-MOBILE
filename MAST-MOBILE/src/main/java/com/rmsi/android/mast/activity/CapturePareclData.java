@@ -235,14 +235,14 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
 
 //        BroadcastReceiverBT BTReceiver =new BroadcastReceiverBT(context);
         //The BroadcastReceiver that listens for bluetooth broadcasts
-        try {
-            IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
-
-
-            this.registerReceiver(BTReceiver, filter2);
-        }catch (Exception e){
-            cf.appLog("",e);
-        }
+//        try {
+//            IntentFilter filter2 = new IntentFilter(BluetoothDevice.ACTION_ACL_DISCONNECTED);
+//
+//
+//            this.registerReceiver(BTReceiver, filter2);
+//        }catch (Exception e){
+//            cf.appLog("",e);
+//        }
 
 
 
@@ -617,11 +617,11 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
         AppIndex.AppIndexApi.end(client, getIndexApiAction());
         client.disconnect();
         locationManager.removeUpdates(locationListener);
-        try {
-            this.unregisterReceiver(BTReceiver);
-        }catch (Exception e){
-            e.getMessage();
-        }
+//        try {
+//            this.unregisterReceiver(BTReceiver);
+//        }catch (Exception e){
+//            e.getMessage();
+//        }
 
         try {
             handler.removeCallbacksAndMessages(null);
@@ -3832,23 +3832,15 @@ public class CapturePareclData extends AppCompatActivity implements OnMapReadyCa
 
 
     //The BroadcastReceiver that listens for bluetooth broadcasts
-    private final BroadcastReceiver BTReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-
-
-            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
-                //Do something if connected
-                // Get the BluetoothDevice object from the Intent
-                new ConnectingDevice(intent).execute();
-
-
-//
-
-            }
-        }
-    };
+//    private final BroadcastReceiver BTReceiver = new BroadcastReceiver() {
+//        @Override
+//        public void onReceive(Context context, Intent intent) {
+//            String action = intent.getAction();
+//            if (BluetoothDevice.ACTION_ACL_DISCONNECTED.equals(action)) {
+//                new ConnectingDevice(intent).execute();
+//            }
+//        }
+//    };
 
     public class AddTask extends AsyncTask<String, Integer, String> {
 
